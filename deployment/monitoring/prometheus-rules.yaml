@@ -1,0 +1,136 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: quantum-rerank-alerts
+  namespace: quantum-rerank
+  labels:
+    app: quantum-rerank
+    prometheus: kube-prometheus
+    role: alert-rules
+spec:
+  groups:
+  - name: quantum-rerank.rules
+    rules:
+    - alert: QuantumRerankHighErrorRate
+      expr: |
+        (
+          sum(rate(http_requests_total{job="quantum-rerank", code!~"2.."}[5m])) /
+          sum(rate(http_requests_total{job="quantum-rerank"}[5m]))
+        ) > 0.05
+      for: 5m
+      labels:
+        severity: critical
+        service: quantum-rerank
+      annotations:
+        summary: "QuantumRerank high error rate"
+        description: "QuantumRerank error rate is {{ $value | humanizePercentage }} which is above 5%"
+    
+    - alert: QuantumRerankHighLatency
+      expr: |
+        histogram_quantile(0.95, 
+          sum(rate(http_request_duration_seconds_bucket{job="quantum-rerank"}[5m])) by (le)
+        ) > 0.5
+      for: 5m
+      labels:
+        severity: warning
+        service: quantum-rerank
+      annotations:
+        summary: "QuantumRerank high latency"
+        description: "QuantumRerank 95th percentile latency is {{ $value }}s which is above 500ms"
+    
+    - alert: QuantumRerankSimilarityLatency
+      expr: |
+        histogram_quantile(0.95,
+          sum(rate(similarity_computation_duration_seconds_bucket{job="quantum-rerank"}[5m])) by (le)
+        ) > 0.1
+      for: 2m
+      labels:
+        severity: critical
+        service: quantum-rerank
+      annotations:
+        summary: "QuantumRerank similarity computation too slow"
+        description: "Similarity computation 95th percentile is {{ $value }}s, exceeding 100ms PRD target"
+    
+    - alert: QuantumRerankBatchLatency
+      expr: |
+        histogram_quantile(0.95,
+          sum(rate(batch_processing_duration_seconds_bucket{job="quantum-rerank"}[5m])) by (le)
+        ) > 0.5
+      for: 2m
+      labels:
+        severity: critical
+        service: quantum-rerank
+      annotations:
+        summary: "QuantumRerank batch processing too slow"
+        description: "Batch processing 95th percentile is {{ $value }}s, exceeding 500ms PRD target"
+    
+    - alert: QuantumRerankHighMemoryUsage
+      expr: |
+        (
+          sum(container_memory_working_set_bytes{pod=~"quantum-rerank-.*"}) /
+          sum(container_spec_memory_limit_bytes{pod=~"quantum-rerank-.*"})
+        ) > 0.9
+      for: 5m
+      labels:
+        severity: warning
+        service: quantum-rerank
+      annotations:
+        summary: "QuantumRerank high memory usage"
+        description: "QuantumRerank memory usage is {{ $value | humanizePercentage }} of limit"
+    
+    - alert: QuantumRerankPodCrashLooping
+      expr: |
+        rate(kube_pod_container_status_restarts_total{pod=~"quantum-rerank-.*"}[15m]) > 0
+      for: 5m
+      labels:
+        severity: critical
+        service: quantum-rerank
+      annotations:
+        summary: "QuantumRerank pod crash looping"
+        description: "Pod {{ $labels.pod }} is crash looping"
+    
+    - alert: QuantumRerankPodNotReady
+      expr: |
+        kube_pod_status_ready{condition="false", pod=~"quantum-rerank-.*"} == 1
+      for: 5m
+      labels:
+        severity: warning
+        service: quantum-rerank
+      annotations:
+        summary: "QuantumRerank pod not ready"
+        description: "Pod {{ $labels.pod }} has been not ready for more than 5 minutes"
+    
+    - alert: QuantumRerankDeploymentReplicasMismatch
+      expr: |
+        kube_deployment_spec_replicas{deployment="quantum-rerank"} !=
+        kube_deployment_status_available_replicas{deployment="quantum-rerank"}
+      for: 10m
+      labels:
+        severity: warning
+        service: quantum-rerank
+      annotations:
+        summary: "QuantumRerank deployment replicas mismatch"
+        description: "Deployment {{ $labels.deployment }} has {{ $value }} replicas available, expected {{ $labels.spec_replicas }}"
+    
+    - alert: QuantumRerankHPAMaxReplicas
+      expr: |
+        kube_horizontalpodautoscaler_status_current_replicas{horizontalpodautoscaler="quantum-rerank-hpa"} >=
+        kube_horizontalpodautoscaler_spec_max_replicas{horizontalpodautoscaler="quantum-rerank-hpa"}
+      for: 10m
+      labels:
+        severity: warning
+        service: quantum-rerank
+      annotations:
+        summary: "QuantumRerank HPA at maximum replicas"
+        description: "HPA {{ $labels.horizontalpodautoscaler }} has reached maximum replicas"
+    
+    - alert: QuantumRerankServiceDown
+      expr: |
+        up{job="quantum-rerank"} == 0
+      for: 1m
+      labels:
+        severity: critical
+        service: quantum-rerank
+      annotations:
+        summary: "QuantumRerank service down"
+        description: "QuantumRerank service has been down for more than 1 minute"

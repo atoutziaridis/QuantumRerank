@@ -1,0 +1,205 @@
+# Kubernetes ConfigMap for QuantumRerank configuration
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: quantum-rerank-config
+  labels:
+    app: quantum-rerank
+data:
+  # Application configuration
+  WORKERS: "4"
+  WORKER_CLASS: "uvicorn.workers.UvicornWorker"
+  WORKER_CONNECTIONS: "1000"
+  MAX_REQUESTS: "1000"
+  MAX_REQUESTS_JITTER: "100"
+  PRELOAD_APP: "true"
+  
+  # API configuration
+  API_HOST: "0.0.0.0"
+  API_PORT: "8000"
+  API_WORKERS: "4"
+  API_TIMEOUT: "30"
+  API_KEEPALIVE: "5"
+  
+  # Logging configuration
+  LOG_LEVEL: "INFO"
+  LOG_FORMAT: "json"
+  ACCESS_LOG: "true"
+  ERROR_LOG: "true"
+  
+  # Performance tuning
+  BACKLOG: "2048"
+  WORKER_TMP_DIR: "/dev/shm"
+  
+  # Health check configuration
+  HEALTH_CHECK_INTERVAL: "30"
+  HEALTH_CHECK_TIMEOUT: "10"
+  HEALTH_CHECK_RETRIES: "3"
+  
+  # Monitoring configuration
+  PROMETHEUS_METRICS_ENABLED: "true"
+  PROMETHEUS_METRICS_PORT: "8001"
+  PROMETHEUS_METRICS_PATH: "/metrics"
+  
+  # Cache configuration
+  CACHE_ENABLED: "true"
+  CACHE_TTL: "3600"
+  CACHE_MAX_SIZE: "1000"
+  
+  # Quantum configuration
+  QUANTUM_N_QUBITS: "4"
+  QUANTUM_BACKEND: "default"
+  QUANTUM_SHOTS: "1024"
+  QUANTUM_OPTIMIZATION_LEVEL: "2"
+  
+  # ML configuration
+  ML_MODEL_CACHE_SIZE: "100"
+  ML_BATCH_SIZE: "32"
+  ML_MAX_SEQUENCE_LENGTH: "512"
+  
+  # Security configuration
+  SECURITY_HEADERS_ENABLED: "true"
+  RATE_LIMITING_ENABLED: "true"
+  REQUEST_FILTERING_ENABLED: "true"
+  
+  # CORS configuration
+  CORS_ALLOW_ORIGINS: "https://quantumrerank.com,https://app.quantumrerank.com"
+  CORS_ALLOW_METHODS: "GET,POST,PUT,DELETE,OPTIONS"
+  CORS_ALLOW_HEADERS: "Content-Type,Authorization,X-API-Key"
+  CORS_MAX_AGE: "3600"
+
+---
+# Environment-specific ConfigMap for production
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: quantum-rerank-prod-config
+  labels:
+    app: quantum-rerank
+    environment: production
+data:
+  # Production-specific overrides
+  DEBUG: "false"
+  LOG_LEVEL: "INFO"
+  WORKERS: "4"
+  
+  # Production performance settings
+  QUANTUM_OPTIMIZATION_LEVEL: "3"
+  CACHE_TTL: "7200"
+  
+  # Production security settings
+  SECURITY_STRICT_MODE: "true"
+  RATE_LIMIT_STRICT: "true"
+  
+  # Production monitoring
+  METRICS_DETAILED: "true"
+  HEALTH_CHECK_COMPREHENSIVE: "true"
+
+---
+# Environment-specific ConfigMap for staging
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: quantum-rerank-staging-config
+  labels:
+    app: quantum-rerank
+    environment: staging
+data:
+  # Staging-specific overrides
+  DEBUG: "false"
+  LOG_LEVEL: "DEBUG"
+  WORKERS: "2"
+  
+  # Staging performance settings
+  QUANTUM_SHOTS: "512"
+  CACHE_TTL: "1800"
+  
+  # Staging testing features
+  LOAD_TESTING_ENABLED: "true"
+  PERFORMANCE_PROFILING: "true"
+
+---
+# ConfigMap for application-specific configuration files
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: quantum-rerank-app-config
+  labels:
+    app: quantum-rerank
+data:
+  # Production configuration file
+  production.yaml: |
+    quantum:
+      n_qubits: 4
+      backend: "default"
+      shots: 1024
+      optimization_level: 3
+      performance_optimized: true
+      caching_enabled: true
+    
+    api:
+      workers: 4
+      max_connections: 1000
+      timeout_seconds: 30
+      rate_limiting:
+        enabled: true
+        requests_per_minute: 1000
+        burst_size: 100
+    
+    monitoring:
+      enabled: true
+      metrics_endpoint: true
+      health_checks: comprehensive
+      prometheus:
+        enabled: true
+        port: 8001
+    
+    security:
+      authentication_required: true
+      rate_limiting_strict: true
+      https_only: true
+      security_headers: true
+    
+    logging:
+      level: INFO
+      format: json
+      structured: true
+      
+    cache:
+      enabled: true
+      ttl_seconds: 7200
+      max_size: 1000
+  
+  # Staging configuration file
+  staging.yaml: |
+    quantum:
+      n_qubits: 4
+      backend: "default"
+      shots: 512
+      debugging_enabled: true
+      performance_monitoring: true
+    
+    api:
+      workers: 2
+      debug_mode: false
+      detailed_logging: true
+      rate_limiting:
+        enabled: true
+        requests_per_minute: 300
+        burst_size: 50
+    
+    monitoring:
+      enabled: true
+      test_endpoints: true
+      load_testing: enabled
+      detailed_metrics: true
+    
+    security:
+      authentication_required: true
+      rate_limiting_strict: false
+      testing_mode: true
+    
+    logging:
+      level: DEBUG
+      format: json
+      detailed: true

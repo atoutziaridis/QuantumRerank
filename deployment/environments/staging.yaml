@@ -1,0 +1,398 @@
+# Staging Environment Configuration for QuantumRerank
+# Production-like environment for testing and validation
+
+# Quantum Engine Configuration
+quantum:
+  n_qubits: 4
+  backend: "default"
+  shots: 512  # Lower for faster testing
+  optimization_level: 2
+  performance_optimized: true
+  caching_enabled: true
+  debugging_enabled: true
+  performance_monitoring: true
+  
+  # Staging-specific settings
+  enable_noise_simulation: true
+  hardware_efficient_ansatz: true
+  test_mode: true
+
+# API Configuration
+api:
+  host: "0.0.0.0"
+  port: 8000
+  workers: 2  # Fewer workers for staging
+  worker_class: "uvicorn.workers.UvicornWorker"
+  max_connections: 500
+  timeout_seconds: 30
+  keepalive: 5
+  
+  # Staging API settings
+  debug: false
+  reload: false
+  detailed_logging: true
+  
+  # Rate limiting configuration
+  rate_limiting:
+    enabled: true
+    strict_mode: false  # Less strict for testing
+    requests_per_minute: 300
+    requests_per_hour: 10000
+    burst_size: 50
+    cleanup_interval: 300
+
+# Security Configuration
+security:
+  authentication_required: true
+  rate_limiting_strict: false
+  https_only: false  # Allow HTTP for testing
+  security_headers: true
+  cors_strict: false
+  input_validation_strict: true
+  testing_mode: true
+  
+  # Security headers
+  headers:
+    x_content_type_options: "nosniff"
+    x_frame_options: "SAMEORIGIN"  # Less strict
+    x_xss_protection: "1; mode=block"
+    strict_transport_security: "max-age=86400"  # Shorter duration
+    referrer_policy: "strict-origin-when-cross-origin"
+  
+  # CORS configuration (more permissive for testing)
+  cors:
+    allow_origins: 
+      - "https://staging.quantumrerank.com"
+      - "https://test.quantumrerank.com"
+      - "http://localhost:3000"  # For local frontend testing
+    allow_methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"]
+    allow_headers: ["*"]
+    max_age: 3600
+    allow_credentials: true
+
+# Monitoring and Observability
+monitoring:
+  enabled: true
+  test_endpoints: true
+  load_testing: enabled
+  detailed_metrics: true
+  debug_logging: true
+  
+  # Prometheus configuration
+  prometheus:
+    enabled: true
+    port: 8001
+    path: "/metrics"
+    detailed_metrics: true
+    debug_metrics: true
+  
+  # OpenTelemetry configuration
+  opentelemetry:
+    enabled: true
+    service_name: "quantum-rerank-api-staging"
+    service_version: "1.0.0-staging"
+    environment: "staging"
+    
+    # Tracing configuration (higher sampling for testing)
+    tracing:
+      enabled: true
+      sample_rate: 1.0  # 100% sampling for staging
+      max_spans: 1000
+      debug_mode: true
+    
+    # Metrics configuration
+    metrics:
+      enabled: true
+      export_interval: 10  # More frequent exports
+      max_export_batch_size: 256
+
+# Logging Configuration
+logging:
+  level: "DEBUG"  # More verbose logging
+  format: "json"
+  structured: true
+  include_timestamp: true
+  include_caller: true
+  detailed: true
+  
+  # Log rotation
+  rotation:
+    enabled: true
+    max_size: "50MB"
+    max_files: 5
+    max_age: 7  # days
+  
+  # Log destinations
+  destinations:
+    console: true
+    file: true
+    syslog: false
+    remote: false  # Keep logs local for testing
+  
+  # Include more fields for debugging
+  extra_fields:
+    - "request_id"
+    - "user_id"
+    - "endpoint"
+    - "method"
+    - "performance_metrics"
+
+# Caching Configuration
+cache:
+  enabled: true
+  ttl_seconds: 1800  # Shorter TTL for testing
+  max_size: 500
+  cleanup_interval: 180
+  
+  # Redis configuration
+  redis:
+    enabled: true
+    host: "redis"
+    port: 6379
+    db: 1  # Different DB from production
+    max_connections: 50
+    connection_timeout: 5
+    
+  # Memory cache configuration
+  memory:
+    enabled: true
+    max_size_mb: 256
+    eviction_policy: "LRU"
+
+# Performance Configuration
+performance:
+  # PRD target compliance (relaxed for staging)
+  targets:
+    similarity_computation_ms: 150  # Slightly relaxed
+    batch_processing_ms: 750
+    memory_usage_gb: 2.0
+    accuracy_improvement_percent: 12.0
+    response_time_ms: 300
+    error_rate: 0.02
+    uptime: 0.99
+  
+  # Optimization settings
+  optimization:
+    enable_jit: true
+    enable_vectorization: true
+    batch_size_optimization: true
+    memory_pool_size: "512MB"
+    thread_pool_size: 4
+  
+  # Resource limits
+  resources:
+    max_memory_gb: 2
+    max_cpu_cores: 1
+    max_disk_gb: 5
+    max_network_connections: 500
+
+# Testing Configuration
+testing:
+  enabled: true
+  
+  # Load testing settings
+  load_testing:
+    enabled: true
+    max_concurrent_users: 100
+    test_duration: 300  # 5 minutes
+    ramp_up_time: 60
+    
+  # Performance testing
+  performance_testing:
+    enabled: true
+    target_rps: 50
+    duration: 180
+    
+  # Chaos engineering
+  chaos_testing:
+    enabled: true
+    failure_rate: 0.1  # 10% failure injection
+    
+  # A/B testing
+  ab_testing:
+    enabled: true
+    test_variants: ["v1", "v2"]
+    traffic_split: [50, 50]
+
+# Database Configuration (if using)
+database:
+  enabled: false
+  type: "postgresql"
+  host: "postgres-staging"
+  port: 5432
+  name: "quantum_rerank_staging"
+  pool_size: 10
+  max_overflow: 15
+  pool_timeout: 30
+  pool_recycle: 3600
+
+# External Services Configuration
+external_services:
+  # ML model services
+  huggingface:
+    enabled: true
+    api_timeout: 30
+    retry_attempts: 3
+    staging_models: true
+    
+  # Vector databases
+  pinecone:
+    enabled: false
+    environment: "staging"
+    
+  # Mock services for testing
+  mock_services:
+    enabled: true
+    response_delay: 100  # ms
+    failure_rate: 0.05  # 5%
+
+# Feature Flags
+features:
+  quantum_similarity: true
+  classical_fallback: true
+  batch_processing: true
+  real_time_monitoring: true
+  advanced_caching: true
+  load_balancing: true
+  auto_scaling: false  # Disabled for staging
+  
+  # Testing features
+  experimental_algorithms: true
+  beta_endpoints: true
+  debug_endpoints: true
+  test_endpoints: true
+  performance_profiling: true
+
+# Deployment Configuration
+deployment:
+  environment: "staging"
+  region: "us-west-2"
+  availability_zones: ["us-west-2a", "us-west-2b"]
+  
+  # Kubernetes settings
+  kubernetes:
+    namespace: "quantum-rerank-staging"
+    replicas: 2
+    max_replicas: 5
+    min_replicas: 1
+    
+    # Resource requirements
+    resources:
+      requests:
+        cpu: "250m"
+        memory: "512Mi"
+      limits:
+        cpu: "500m"
+        memory: "1Gi"
+    
+    # Health checks
+    health_checks:
+      liveness_probe:
+        initial_delay: 20
+        period: 10
+        timeout: 5
+        failure_threshold: 3
+      
+      readiness_probe:
+        initial_delay: 5
+        period: 5
+        timeout: 3
+        failure_threshold: 3
+    
+    # Autoscaling (disabled for predictable testing)
+    autoscaling:
+      enabled: false
+      cpu_target: 70
+      memory_target: 80
+
+# Alerting Configuration (less aggressive)
+alerting:
+  enabled: true
+  
+  # Alert channels
+  channels:
+    email:
+      enabled: true
+      recipients: ["staging-alerts@quantumrerank.com"]
+    
+    slack:
+      enabled: true
+      webhook_url: "${SLACK_STAGING_WEBHOOK_URL}"
+      channel: "#staging-alerts"
+  
+  # Alert rules (higher thresholds)
+  rules:
+    # Performance alerts
+    - name: "High Response Time"
+      condition: "avg_response_time > 500ms"
+      severity: "warning"
+      duration: "10m"
+      
+    - name: "Critical Response Time"
+      condition: "avg_response_time > 1000ms"
+      severity: "critical"
+      duration: "5m"
+    
+    # Error rate alerts
+    - name: "High Error Rate"
+      condition: "error_rate > 10%"
+      severity: "warning"
+      duration: "10m"
+      
+    - name: "Critical Error Rate"
+      condition: "error_rate > 20%"
+      severity: "critical"
+      duration: "5m"
+
+# Development and Testing Tools
+dev_tools:
+  enabled: true
+  
+  # API documentation
+  docs:
+    enabled: true
+    swagger_ui: true
+    redoc: true
+    openapi_json: true
+  
+  # Debug endpoints
+  debug_endpoints:
+    enabled: true
+    performance_metrics: true
+    health_details: true
+    configuration_dump: true
+  
+  # Profiling
+  profiling:
+    enabled: true
+    cpu_profiling: true
+    memory_profiling: true
+    line_profiling: false
+  
+  # Monitoring dashboard
+  dashboard:
+    enabled: true
+    real_time_metrics: true
+    historical_data: true
+
+# Data and Analytics
+analytics:
+  enabled: true
+  
+  # Usage analytics
+  usage_tracking:
+    enabled: true
+    detailed_tracking: true
+    user_journey: true
+  
+  # Performance analytics
+  performance_tracking:
+    enabled: true
+    detailed_timing: true
+    bottleneck_detection: true
+  
+  # A/B test analytics
+  ab_test_analytics:
+    enabled: true
+    real_time_results: true
+    statistical_significance: true

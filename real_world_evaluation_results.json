@@ -1,0 +1,30 @@
+{
+  "QuantumRerank-Classical": {
+    "avg_ndcg": 0.9834808960108793,
+    "avg_kendall_tau": 0.7185185185185184,
+    "avg_precision_at_3": 0.8888888888888888,
+    "avg_time_ms": 834.9807262420654,
+    "num_scenarios": 3
+  },
+  "QuantumRerank-Quantum": {
+    "avg_ndcg": 0.8854348357692494,
+    "avg_kendall_tau": 0.24444444444444444,
+    "avg_precision_at_3": 0.4444444444444444,
+    "avg_time_ms": 905.2368799845377,
+    "num_scenarios": 3
+  },
+  "QuantumRerank-Hybrid": {
+    "avg_ndcg": 0.9844047890857285,
+    "avg_kendall_tau": 0.7481481481481481,
+    "avg_precision_at_3": 0.8888888888888888,
+    "avg_time_ms": 991.6323026021322,
+    "num_scenarios": 3
+  },
+  "Random-Baseline": {
+    "avg_ndcg": 0.8196182449367718,
+    "avg_kendall_tau": 0.06666666666666667,
+    "avg_precision_at_3": 0.2222222222222222,
+    "avg_time_ms": 0.05547205607096354,
+    "num_scenarios": 3
+  }
+}

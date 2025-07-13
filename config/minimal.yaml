@@ -1,0 +1,43 @@
+# Minimal configuration for basic API testing
+api:
+  host: "0.0.0.0"
+  port: 8000
+  debug: true
+  enable_cors: true
+
+# Disable quantum features for basic testing
+quantum:
+  enabled: false
+  fallback_to_classical: true
+  circuit:
+    depth: 3
+    shots: 1000
+
+# Use classical similarity only
+similarity:
+  default_method: "classical"
+  classical_model: "basic"  # Will use simple cosine similarity
+  methods:
+    - "classical"
+
+# Disable complex features
+caching:
+  enabled: false
+
+monitoring:
+  enabled: false
+  collect_quantum_metrics: false
+
+security:
+  require_api_key: false
+  api_keys:
+    enabled: false
+
+# Simple logging
+logging:
+  level: "INFO"
+  format: "simple"
+
+# Disable ML training features
+training:
+  enabled: false

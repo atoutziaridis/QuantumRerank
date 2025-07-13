@@ -1,0 +1,72 @@
+# QuantumRerank Default Configuration
+# Generated: 2025-07-12
+# This configuration follows PRD specifications and best practices
+
+environment: development  # Deployment environment
+version: 1.0.0  # Configuration version
+
+# Quantum computation settings (PRD constraints)
+quantum:
+  n_qubits: 4  # PRD: 2-4 qubits maximum
+  max_circuit_depth: 15  # PRD: ≤15 gates
+  shots: 1024  # Quantum measurement shots
+  simulator_method: statevector  # Quantum simulator
+  enable_optimization: true  # Circuit optimization
+  quantum_backends:
+    - aer_simulator
+    - qasm_simulator
+
+# Machine learning and embedding settings
+ml:
+  embedding_model: sentence-transformers/multi-qa-mpnet-base-dot-v1  # Recommended by docs
+  embedding_dim: 768  # Embedding dimensions
+  batch_size: 50  # PRD: 50-100 documents
+  max_sequence_length: 512  # Token limit
+  use_quantum_compression: true  # Enable compression
+  compressed_dim: 256  # Compressed dimensions
+  fallback_models:
+    - sentence-transformers/all-MiniLM-L6-v2
+    - sentence-transformers/all-mpnet-base-v2
+  parameter_prediction:
+    hidden_dims: [512, 256]
+    dropout_rate: 0.1
+    learning_rate: 0.001
+    activation: relu
+
+# Performance targets (PRD specifications)
+performance:
+  similarity_timeout_ms: 100  # PRD: <100ms
+  batch_timeout_ms: 500  # PRD: <500ms
+  max_memory_gb: 2.0  # PRD: <2GB
+  cache_size: 1000  # Cache entries
+  enable_caching: true  # Enable caching
+  max_concurrent_requests: 10  # Concurrency limit
+  cpu_usage_threshold: 0.8  # CPU monitoring threshold
+  memory_usage_threshold: 0.9  # Memory monitoring threshold
+  quantum_computation_timeout_s: 30  # Quantum computation timeout
+  model_inference_timeout_s: 10  # ML model inference timeout
+
+# API service configuration
+api:
+  host: 0.0.0.0  # Bind address
+  port: 8000  # Service port
+  workers: 4  # Worker processes
+  rate_limit: 100/minute  # Rate limiting
+  enable_auth: false  # Authentication
+  cors_enabled: true  # CORS support
+  cors_origins:
+    - "*"
+  request_timeout_s: 30  # Request timeout
+  max_request_size_mb: 10  # Maximum request size
+
+# Monitoring and logging settings
+monitoring:
+  log_level: INFO  # Logging verbosity
+  enable_metrics: true  # Metrics collection
+  metrics_port: 9090  # Metrics endpoint
+  health_check_interval_s: 30  # Health check frequency
+  enable_tracing: false  # Distributed tracing
+  log_format: json  # Log format
+  log_file: null  # Log file path
+  max_log_file_size_mb: 100  # Log rotation
+  log_retention_days: 7  # Log retention

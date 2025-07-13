@@ -1,0 +1,28 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: quantum-rerank-metrics
+  namespace: quantum-rerank
+  labels:
+    app: quantum-rerank
+    prometheus: kube-prometheus
+spec:
+  selector:
+    matchLabels:
+      app: quantum-rerank
+      monitor: "true"
+  endpoints:
+  - port: metrics
+    interval: 30s
+    path: /metrics
+    honorLabels: true
+    relabelings:
+    - sourceLabels: [__meta_kubernetes_pod_name]
+      targetLabel: pod
+    - sourceLabels: [__meta_kubernetes_pod_ip]
+      targetLabel: pod_ip
+    - sourceLabels: [__meta_kubernetes_namespace]
+      targetLabel: kubernetes_namespace
+  namespaceSelector:
+    matchNames:
+    - quantum-rerank

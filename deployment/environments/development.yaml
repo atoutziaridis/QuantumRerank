@@ -1,0 +1,390 @@
+# Development Environment Configuration for QuantumRerank
+# Optimized for local development with debugging and testing features
+
+# Quantum Engine Configuration
+quantum:
+  n_qubits: 4
+  backend: "default"
+  shots: 256  # Lower for faster development
+  optimization_level: 1
+  performance_optimized: false
+  caching_enabled: true
+  debugging_enabled: true
+  verbose_logging: true
+  
+  # Development-specific settings
+  enable_noise_simulation: false
+  hardware_efficient_ansatz: false
+  test_mode: true
+  mock_quantum_backend: false
+
+# API Configuration
+api:
+  host: "0.0.0.0"
+  port: 8000
+  workers: 1  # Single worker for development
+  worker_class: "uvicorn.workers.UvicornWorker"
+  max_connections: 100
+  timeout_seconds: 60  # Longer timeout for debugging
+  keepalive: 2
+  
+  # Development API settings
+  debug: true
+  reload: true  # Hot reload enabled
+  detailed_logging: true
+  log_config: null  # Use default uvicorn logging
+  
+  # Rate limiting configuration (very permissive)
+  rate_limiting:
+    enabled: false  # Disabled for development
+    strict_mode: false
+    requests_per_minute: 1000
+    requests_per_hour: 100000
+    burst_size: 200
+
+# Security Configuration (relaxed for development)
+security:
+  authentication_required: false  # Disabled for easier testing
+  rate_limiting_strict: false
+  https_only: false
+  security_headers: false  # Disabled to avoid CORS issues
+  cors_strict: false
+  input_validation_strict: false
+  testing_mode: true
+  
+  # CORS configuration (very permissive)
+  cors:
+    allow_origins: ["*"]  # Allow all origins
+    allow_methods: ["*"]  # Allow all methods
+    allow_headers: ["*"]  # Allow all headers
+    max_age: 3600
+    allow_credentials: true
+
+# Monitoring and Observability
+monitoring:
+  enabled: true
+  test_endpoints: true
+  load_testing: disabled
+  detailed_metrics: true
+  debug_logging: true
+  development_metrics: true
+  
+  # Prometheus configuration (simplified)
+  prometheus:
+    enabled: true
+    port: 8001
+    path: "/metrics"
+    detailed_metrics: true
+    debug_metrics: true
+    development_mode: true
+  
+  # OpenTelemetry configuration
+  opentelemetry:
+    enabled: false  # Disabled for simpler development
+    service_name: "quantum-rerank-api-dev"
+    service_version: "dev"
+    environment: "development"
+
+# Logging Configuration (verbose)
+logging:
+  level: "DEBUG"
+  format: "colored"  # Colored output for development
+  structured: false  # Simple format for readability
+  include_timestamp: true
+  include_caller: true
+  detailed: true
+  
+  # Console logging only
+  destinations:
+    console: true
+    file: false
+    syslog: false
+    remote: false
+  
+  # Development-specific fields
+  extra_fields:
+    - "request_id"
+    - "user_id"
+    - "endpoint"
+    - "method"
+    - "performance_metrics"
+    - "debug_info"
+    - "stack_trace"
+
+# Caching Configuration (minimal)
+cache:
+  enabled: true
+  ttl_seconds: 300  # Short TTL for development
+  max_size: 100
+  cleanup_interval: 60
+  
+  # Memory cache only
+  memory:
+    enabled: true
+    max_size_mb: 128
+    eviction_policy: "LRU"
+  
+  # Redis disabled for simpler setup
+  redis:
+    enabled: false
+
+# Performance Configuration (relaxed targets)
+performance:
+  # Relaxed targets for development
+  targets:
+    similarity_computation_ms: 300
+    batch_processing_ms: 1000
+    memory_usage_gb: 4.0  # More generous for debugging
+    accuracy_improvement_percent: 10.0
+    response_time_ms: 500
+    error_rate: 0.05
+    uptime: 0.90
+  
+  # Development optimization
+  optimization:
+    enable_jit: false  # Disabled for easier debugging
+    enable_vectorization: false
+    batch_size_optimization: false
+    memory_pool_size: "256MB"
+    thread_pool_size: 2
+  
+  # Resource limits (generous)
+  resources:
+    max_memory_gb: 4
+    max_cpu_cores: 2
+    max_disk_gb: 10
+    max_network_connections: 100
+
+# Development Tools and Features
+development:
+  enabled: true
+  
+  # Hot reload configuration
+  reload:
+    enabled: true
+    reload_dirs: ["quantum_rerank"]
+    reload_includes: ["*.py"]
+    reload_excludes: ["*.pyc", "*.pyo", "*~"]
+  
+  # Debug tools
+  debug:
+    enabled: true
+    interactive_debugger: true
+    profiling: true
+    memory_profiling: false
+    line_profiling: false
+  
+  # Mock services
+  mock_services:
+    enabled: true
+    mock_external_apis: true
+    mock_database: true
+    mock_quantum_backend: false
+  
+  # Testing tools
+  testing:
+    enabled: true
+    unit_tests: true
+    integration_tests: true
+    load_tests: false
+    chaos_tests: false
+
+# Database Configuration (SQLite for development)
+database:
+  enabled: false
+  type: "sqlite"
+  path: "/tmp/quantum_rerank_dev.db"
+  echo: true  # Log SQL queries
+  
+  # Connection settings
+  connection:
+    check_same_thread: false
+    timeout: 30
+
+# External Services Configuration (mocked)
+external_services:
+  # ML model services (local/mocked)
+  huggingface:
+    enabled: true
+    api_timeout: 60
+    retry_attempts: 1
+    use_local_models: true
+    cache_models: true
+    
+  # Vector databases (disabled)
+  pinecone:
+    enabled: false
+    
+  # Cloud services (disabled)
+  aws:
+    enabled: false
+    
+  gcp:
+    enabled: false
+    
+  azure:
+    enabled: false
+
+# Feature Flags (all enabled for testing)
+features:
+  quantum_similarity: true
+  classical_fallback: true
+  batch_processing: true
+  real_time_monitoring: true
+  advanced_caching: true
+  load_balancing: false
+  auto_scaling: false
+  
+  # Development features
+  experimental_algorithms: true
+  beta_endpoints: true
+  debug_endpoints: true
+  test_endpoints: true
+  performance_profiling: true
+  hot_reload: true
+  mock_mode: false
+
+# Development Server Configuration
+server:
+  # Uvicorn development settings
+  reload: true
+  reload_dirs: ["quantum_rerank"]
+  debug: true
+  access_log: true
+  use_colors: true
+  
+  # Development middleware
+  middleware:
+    cors: true
+    timing: true
+    error_handling: true
+    logging: true
+    authentication: false  # Disabled
+    rate_limiting: false  # Disabled
+    security: false  # Disabled
+
+# API Documentation
+docs:
+  enabled: true
+  swagger_ui: true
+  redoc: true
+  openapi_json: true
+  docs_url: "/docs"
+  redoc_url: "/redoc"
+  openapi_url: "/openapi.json"
+  
+  # Development-specific documentation
+  include_examples: true
+  include_schemas: true
+  expand_responses: true
+
+# Testing Configuration
+testing:
+  enabled: true
+  
+  # Unit testing
+  unit_tests:
+    enabled: true
+    coverage: true
+    parallel: false
+    verbose: true
+  
+  # Integration testing
+  integration_tests:
+    enabled: true
+    test_database: true
+    test_external_services: false
+  
+  # API testing
+  api_tests:
+    enabled: true
+    test_all_endpoints: true
+    test_error_handling: true
+    test_authentication: false
+  
+  # Performance testing (minimal)
+  performance_tests:
+    enabled: false
+    duration: 30
+    concurrent_users: 5
+
+# Development Environment Variables
+env_vars:
+  ENVIRONMENT: "development"
+  DEBUG: "true"
+  PYTHONPATH: "."
+  PYTHONDONTWRITEBYTECODE: "1"
+  PYTHONUNBUFFERED: "1"
+  
+  # Development-specific
+  DEVELOPMENT_MODE: "true"
+  HOT_RELOAD: "true"
+  MOCK_SERVICES: "true"
+  DISABLE_AUTH: "true"
+  VERBOSE_LOGGING: "true"
+
+# Local Development Setup
+local_setup:
+  # Required dependencies
+  dependencies:
+    - "python>=3.11"
+    - "poetry"
+    - "docker"
+    - "docker-compose"
+  
+  # Optional tools
+  optional_tools:
+    - "redis"
+    - "postgresql"
+    - "prometheus"
+    - "grafana"
+  
+  # Setup commands
+  setup_commands:
+    - "poetry install"
+    - "poetry run pre-commit install"
+    - "docker-compose up -d redis"  # If using Redis
+  
+  # Development commands
+  dev_commands:
+    start: "uvicorn quantum_rerank.api.app:app --host 0.0.0.0 --port 8000 --reload"
+    test: "poetry run pytest"
+    lint: "poetry run black . && poetry run isort . && poetry run flake8"
+    type_check: "poetry run mypy quantum_rerank"
+    
+# IDE Configuration
+ide_config:
+  # VS Code settings
+  vscode:
+    python_interpreter: ".venv/bin/python"
+    format_on_save: true
+    lint_on_save: true
+    test_discovery: true
+  
+  # PyCharm settings
+  pycharm:
+    project_interpreter: ".venv/bin/python"
+    code_style: "black"
+    test_runner: "pytest"
+
+# Debugging Configuration
+debugging:
+  enabled: true
+  
+  # Python debugging
+  python:
+    debugger: "debugpy"
+    port: 5678
+    wait_for_client: false
+  
+  # Performance debugging
+  performance:
+    profiling: true
+    memory_profiling: false
+    line_profiling: false
+    
+  # Network debugging
+  network:
+    log_requests: true
+    log_responses: true
+    log_headers: true

@@ -1,0 +1,85 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: quantum-rerank
+  namespace: quantum-rerank
+  labels:
+    app: quantum-rerank
+    environment: production
+automountServiceAccountToken: true
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  namespace: quantum-rerank
+  name: quantum-rerank-role
+  labels:
+    app: quantum-rerank
+    environment: production
+rules:
+- apiGroups: [""]
+  resources: ["pods", "services", "endpoints"]
+  verbs: ["get", "list", "watch"]
+- apiGroups: [""]
+  resources: ["configmaps", "secrets"]
+  verbs: ["get", "list", "watch"]
+- apiGroups: ["apps"]
+  resources: ["deployments", "replicasets"]
+  verbs: ["get", "list", "watch"]
+- apiGroups: ["extensions", "networking.k8s.io"]
+  resources: ["ingresses"]
+  verbs: ["get", "list", "watch"]
+- apiGroups: ["autoscaling"]
+  resources: ["horizontalpodautoscalers"]
+  verbs: ["get", "list", "watch"]
+- apiGroups: ["metrics.k8s.io"]
+  resources: ["pods", "nodes"]
+  verbs: ["get", "list"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: quantum-rerank-rolebinding
+  namespace: quantum-rerank
+  labels:
+    app: quantum-rerank
+    environment: production
+subjects:
+- kind: ServiceAccount
+  name: quantum-rerank
+  namespace: quantum-rerank
+roleRef:
+  kind: Role
+  name: quantum-rerank-role
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: quantum-rerank-cluster-role
+  labels:
+    app: quantum-rerank
+    environment: production
+rules:
+- apiGroups: [""]
+  resources: ["nodes"]
+  verbs: ["get", "list", "watch"]
+- apiGroups: ["metrics.k8s.io"]
+  resources: ["nodes", "pods"]
+  verbs: ["get", "list"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: quantum-rerank-cluster-rolebinding
+  labels:
+    app: quantum-rerank
+    environment: production
+subjects:
+- kind: ServiceAccount
+  name: quantum-rerank
+  namespace: quantum-rerank
+roleRef:
+  kind: ClusterRole
+  name: quantum-rerank-cluster-role
+  apiGroup: rbac.authorization.k8s.io

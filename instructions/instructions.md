@@ -72,4 +72,11 @@ Whenever you generate code or complete a task for this project, **follow these i
 
 * * * * *
 
+*Important notes: !!!*
 **If you are unsure which paper or document is most relevant for the task, or how to interpret any part of the documentation, ask for clarification before proceeding.**
+
+**Make sure that all the tests generated are properly organized. Make sure that we don't leave any scrap or redundant code outside. Make sure that everything is clean, organized, lean.**
+
+*Don't just bunch all the files together. Make sure you have a proper structure. Make sure the code is modular. Make sure you're following the coding best practices. Make sure that the code base is understandable. Make sure that you don't make redundant code.*
+
+**Don't keep adding garbage code. Make sure that all your code additions are thought about, and that you're not just adding stuff just to add. And you're not just adding features just to add them as bolt-on garbage stuff—or you're hallucinating that it works and it doesn't.**
