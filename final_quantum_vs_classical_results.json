@@ -1,0 +1,358 @@
+{
+  "Classical Cosine Similarity": {
+    "summary": {
+      "avg_ndcg": 0.9911536811398615,
+      "avg_kendall_tau": 0.8809523809523809,
+      "avg_precision_3": 0.8888888888888888,
+      "avg_latency_ms": 115.10896682739258,
+      "num_scenarios": 3
+    },
+    "scenarios": {
+      "AI Research Paper Ranking": {
+        "ndcg": 0.9991558763329587,
+        "kendall_tau": 0.9285714285714286,
+        "precision_3": 1.0,
+        "latency_ms": 130.41996955871582,
+        "actual_ranking": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          7,
+          6
+        ],
+        "expected_ranking": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ]
+      },
+      "Quantum Computing Literature": {
+        "ndcg": 0.9743051670866257,
+        "kendall_tau": 0.7142857142857143,
+        "precision_3": 0.6666666666666666,
+        "latency_ms": 100.9669303894043,
+        "actual_ranking": [
+          1,
+          0,
+          3,
+          4,
+          2,
+          5,
+          7,
+          6
+        ],
+        "expected_ranking": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ]
+      },
+      "Software Engineering Concepts": {
+        "ndcg": 1.0,
+        "kendall_tau": 1.0,
+        "precision_3": 1.0,
+        "latency_ms": 113.94000053405762,
+        "actual_ranking": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "expected_ranking": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ]
+      }
+    }
+  },
+  "Quantum Untrained (Random)": {
+    "summary": {
+      "avg_ndcg": 0.9294105052980921,
+      "avg_kendall_tau": 0.3095238095238095,
+      "avg_precision_3": 0.5555555555555555,
+      "avg_latency_ms": 167.88403193155924,
+      "num_scenarios": 3
+    },
+    "scenarios": {
+      "AI Research Paper Ranking": {
+        "ndcg": 0.9569045556837265,
+        "kendall_tau": 0.35714285714285715,
+        "precision_3": 0.6666666666666666,
+        "latency_ms": 166.44024848937988,
+        "actual_ranking": [
+          0,
+          2,
+          3,
+          7,
+          4,
+          6,
+          1,
+          5
+        ],
+        "expected_ranking": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ]
+      },
+      "Quantum Computing Literature": {
+        "ndcg": 0.9189087840664424,
+        "kendall_tau": 0.2857142857142857,
+        "precision_3": 0.6666666666666666,
+        "latency_ms": 148.05984497070312,
+        "actual_ranking": [
+          1,
+          2,
+          4,
+          5,
+          6,
+          7,
+          0,
+          3
+        ],
+        "expected_ranking": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ]
+      },
+      "Software Engineering Concepts": {
+        "ndcg": 0.9124181761441077,
+        "kendall_tau": 0.2857142857142857,
+        "precision_3": 0.3333333333333333,
+        "latency_ms": 189.15200233459473,
+        "actual_ranking": [
+          1,
+          3,
+          4,
+          5,
+          7,
+          0,
+          2,
+          6
+        ],
+        "expected_ranking": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ]
+      }
+    }
+  },
+  "Quantum Trained (MVP)": {
+    "summary": {
+      "avg_ndcg": 0.9324309514045299,
+      "avg_kendall_tau": 0.38095238095238093,
+      "avg_precision_3": 0.5555555555555555,
+      "avg_latency_ms": 161.53931617736816,
+      "num_scenarios": 3
+    },
+    "scenarios": {
+      "AI Research Paper Ranking": {
+        "ndcg": 0.9329614033319363,
+        "kendall_tau": 0.42857142857142855,
+        "precision_3": 0.3333333333333333,
+        "latency_ms": 164.65020179748535,
+        "actual_ranking": [
+          1,
+          3,
+          5,
+          0,
+          4,
+          2,
+          7,
+          6
+        ],
+        "expected_ranking": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ]
+      },
+      "Quantum Computing Literature": {
+        "ndcg": 0.9013441673783721,
+        "kendall_tau": 0.21428571428571427,
+        "precision_3": 0.6666666666666666,
+        "latency_ms": 154.40607070922852,
+        "actual_ranking": [
+          1,
+          7,
+          0,
+          3,
+          2,
+          6,
+          5,
+          4
+        ],
+        "expected_ranking": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ]
+      },
+      "Software Engineering Concepts": {
+        "ndcg": 0.9629872835032814,
+        "kendall_tau": 0.5,
+        "precision_3": 0.6666666666666666,
+        "latency_ms": 165.56167602539062,
+        "actual_ranking": [
+          1,
+          0,
+          4,
+          2,
+          7,
+          5,
+          3,
+          6
+        ],
+        "expected_ranking": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ]
+      }
+    }
+  },
+  "Quantum Trained (Extended)": {
+    "summary": {
+      "avg_ndcg": 0.9290317606580979,
+      "avg_kendall_tau": 0.5,
+      "avg_precision_3": 0.5555555555555555,
+      "avg_latency_ms": 159.94135538736978,
+      "num_scenarios": 3
+    },
+    "scenarios": {
+      "AI Research Paper Ranking": {
+        "ndcg": 0.8485032531746144,
+        "kendall_tau": 0.35714285714285715,
+        "precision_3": 0.3333333333333333,
+        "latency_ms": 161.0422134399414,
+        "actual_ranking": [
+          4,
+          5,
+          0,
+          1,
+          3,
+          2,
+          6,
+          7
+        ],
+        "expected_ranking": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ]
+      },
+      "Quantum Computing Literature": {
+        "ndcg": 0.95334933316136,
+        "kendall_tau": 0.42857142857142855,
+        "precision_3": 0.6666666666666666,
+        "latency_ms": 154.19578552246094,
+        "actual_ranking": [
+          1,
+          0,
+          4,
+          7,
+          3,
+          2,
+          5,
+          6
+        ],
+        "expected_ranking": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ]
+      },
+      "Software Engineering Concepts": {
+        "ndcg": 0.9852426956383195,
+        "kendall_tau": 0.7142857142857143,
+        "precision_3": 0.6666666666666666,
+        "latency_ms": 164.58606719970703,
+        "actual_ranking": [
+          0,
+          1,
+          4,
+          2,
+          5,
+          6,
+          3,
+          7
+        ],
+        "expected_ranking": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ]
+      }
+    }
+  }
+}

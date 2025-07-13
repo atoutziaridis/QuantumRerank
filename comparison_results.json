@@ -1,0 +1,242 @@
+{
+  "Quantum Computing Query": {
+    "Untrained": {
+      "classical": {
+        "top_3_relevant": 3.0,
+        "top_5_relevant": 4.0,
+        "ndcg_3": 1.0,
+        "ndcg_5": 1.0,
+        "latency_ms": 369.4639205932617,
+        "total_relevant": 4
+      },
+      "quantum": {
+        "top_3_relevant": 3.0,
+        "top_5_relevant": 4.0,
+        "ndcg_3": 1.0,
+        "ndcg_5": 1.0,
+        "latency_ms": 142.5638198852539,
+        "total_relevant": 4
+      },
+      "hybrid": {
+        "top_3_relevant": 3.0,
+        "top_5_relevant": 4.0,
+        "ndcg_3": 1.0,
+        "ndcg_5": 1.0,
+        "latency_ms": 278.0458927154541,
+        "total_relevant": 4
+      }
+    },
+    "MVP (500 triplets, 5 epochs)": {
+      "classical": {
+        "top_3_relevant": 3.0,
+        "top_5_relevant": 4.0,
+        "ndcg_3": 1.0,
+        "ndcg_5": 1.0,
+        "latency_ms": 466.1839008331299,
+        "total_relevant": 4
+      },
+      "quantum": {
+        "top_3_relevant": 3.0,
+        "top_5_relevant": 4.0,
+        "ndcg_3": 1.0,
+        "ndcg_5": 1.0,
+        "latency_ms": 681.1058521270752,
+        "total_relevant": 4
+      },
+      "hybrid": {
+        "top_3_relevant": 3.0,
+        "top_5_relevant": 4.0,
+        "ndcg_3": 1.0,
+        "ndcg_5": 1.0,
+        "latency_ms": 381.4511299133301,
+        "total_relevant": 4
+      }
+    },
+    "Extended (2000 triplets, 6+ epochs)": {
+      "classical": {
+        "top_3_relevant": 3.0,
+        "top_5_relevant": 4.0,
+        "ndcg_3": 1.0,
+        "ndcg_5": 1.0,
+        "latency_ms": 132.44962692260742,
+        "total_relevant": 4
+      },
+      "quantum": {
+        "top_3_relevant": 3.0,
+        "top_5_relevant": 4.0,
+        "ndcg_3": 1.0,
+        "ndcg_5": 0.9760000000000001,
+        "latency_ms": 307.4607849121094,
+        "total_relevant": 4
+      },
+      "hybrid": {
+        "top_3_relevant": 3.0,
+        "top_5_relevant": 4.0,
+        "ndcg_3": 1.0,
+        "ndcg_5": 1.0,
+        "latency_ms": 378.41296195983887,
+        "total_relevant": 4
+      }
+    }
+  },
+  "Machine Learning Query": {
+    "Untrained": {
+      "classical": {
+        "top_3_relevant": 3.0,
+        "top_5_relevant": 4.0,
+        "ndcg_3": 1.0,
+        "ndcg_5": 1.0,
+        "latency_ms": 145.49708366394043,
+        "total_relevant": 4
+      },
+      "quantum": {
+        "top_3_relevant": 2.0,
+        "top_5_relevant": 2.0,
+        "ndcg_3": 0.8888888888888888,
+        "ndcg_5": 0.8888888888888888,
+        "latency_ms": 480.8049201965332,
+        "total_relevant": 4
+      },
+      "hybrid": {
+        "top_3_relevant": 3.0,
+        "top_5_relevant": 4.0,
+        "ndcg_3": 1.0,
+        "ndcg_5": 1.0,
+        "latency_ms": 653.3498764038086,
+        "total_relevant": 4
+      }
+    },
+    "MVP (500 triplets, 5 epochs)": {
+      "classical": {
+        "top_3_relevant": 3.0,
+        "top_5_relevant": 4.0,
+        "ndcg_3": 1.0,
+        "ndcg_5": 1.0,
+        "latency_ms": 108.38079452514648,
+        "total_relevant": 4
+      },
+      "quantum": {
+        "top_3_relevant": 3.0,
+        "top_5_relevant": 4.0,
+        "ndcg_3": 1.0,
+        "ndcg_5": 1.0,
+        "latency_ms": 148.7438678741455,
+        "total_relevant": 4
+      },
+      "hybrid": {
+        "top_3_relevant": 3.0,
+        "top_5_relevant": 4.0,
+        "ndcg_3": 1.0,
+        "ndcg_5": 1.0,
+        "latency_ms": 205.352783203125,
+        "total_relevant": 4
+      }
+    },
+    "Extended (2000 triplets, 6+ epochs)": {
+      "classical": {
+        "top_3_relevant": 3.0,
+        "top_5_relevant": 4.0,
+        "ndcg_3": 1.0,
+        "ndcg_5": 1.0,
+        "latency_ms": 101.96208953857422,
+        "total_relevant": 4
+      },
+      "quantum": {
+        "top_3_relevant": 3.0,
+        "top_5_relevant": 4.0,
+        "ndcg_3": 1.0,
+        "ndcg_5": 1.0,
+        "latency_ms": 114.22896385192871,
+        "total_relevant": 4
+      },
+      "hybrid": {
+        "top_3_relevant": 3.0,
+        "top_5_relevant": 4.0,
+        "ndcg_3": 1.0,
+        "ndcg_5": 1.0,
+        "latency_ms": 290.12417793273926,
+        "total_relevant": 4
+      }
+    }
+  },
+  "Scientific Research Query": {
+    "Untrained": {
+      "classical": {
+        "top_3_relevant": 3.0,
+        "top_5_relevant": 4.0,
+        "ndcg_3": 1.0,
+        "ndcg_5": 1.0,
+        "latency_ms": 126.63388252258301,
+        "total_relevant": 4
+      },
+      "quantum": {
+        "top_3_relevant": 3.0,
+        "top_5_relevant": 3.0,
+        "ndcg_3": 1.0,
+        "ndcg_5": 1.0,
+        "latency_ms": 182.19995498657227,
+        "total_relevant": 4
+      },
+      "hybrid": {
+        "top_3_relevant": 3.0,
+        "top_5_relevant": 4.0,
+        "ndcg_3": 1.0,
+        "ndcg_5": 1.0,
+        "latency_ms": 360.6140613555908,
+        "total_relevant": 4
+      }
+    },
+    "MVP (500 triplets, 5 epochs)": {
+      "classical": {
+        "top_3_relevant": 3.0,
+        "top_5_relevant": 4.0,
+        "ndcg_3": 1.0,
+        "ndcg_5": 1.0,
+        "latency_ms": 126.51634216308594,
+        "total_relevant": 4
+      },
+      "quantum": {
+        "top_3_relevant": 2.0,
+        "top_5_relevant": 3.0,
+        "ndcg_3": 1.0,
+        "ndcg_5": 0.9545454545454546,
+        "latency_ms": 174.6082305908203,
+        "total_relevant": 4
+      },
+      "hybrid": {
+        "top_3_relevant": 2.0,
+        "top_5_relevant": 3.0,
+        "ndcg_3": 1.0,
+        "ndcg_5": 0.9545454545454546,
+        "latency_ms": 269.819974899292,
+        "total_relevant": 4
+      }
+    },
+    "Extended (2000 triplets, 6+ epochs)": {
+      "classical": {
+        "top_3_relevant": 3.0,
+        "top_5_relevant": 4.0,
+        "ndcg_3": 1.0,
+        "ndcg_5": 1.0,
+        "latency_ms": 133.80885124206543,
+        "total_relevant": 4
+      },
+      "quantum": {
+        "top_3_relevant": 2.0,
+        "top_5_relevant": 3.0,
+        "ndcg_3": 0.8888888888888888,
+        "ndcg_5": 0.8363636363636363,
+        "latency_ms": 146.5449333190918,
+        "total_relevant": 4
+      },
+      "hybrid": {
+        "top_3_relevant": 3.0,
+        "top_5_relevant": 4.0,
+        "ndcg_3": 1.0,
+        "ndcg_5": 1.0,
+        "latency_ms": 303.3578395843506,
+        "total_relevant": 4
+      }
+    }
+  }
+}

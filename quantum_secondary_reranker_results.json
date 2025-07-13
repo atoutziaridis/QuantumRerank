@@ -1,0 +1,138 @@
+{
+  "summary": {
+    "average_improvements": {
+      "ndcg": -8.488544459043721,
+      "kendall_tau": -26.06060606060605,
+      "precision_3": -16.666666666666668
+    },
+    "beneficial_metrics": 0,
+    "avg_classical_time_ms": 887.3223463694254,
+    "avg_quantum_time_ms": 117.39293734232585,
+    "avg_total_time_ms": 1004.7152837117513
+  },
+  "scenarios": {
+    "Biomedical Research Query": {
+      "classical_metrics": {
+        "ndcg": 0.977842116356989,
+        "kendall_tau": 0.7857142857142857,
+        "precision_3": 0.6666666666666666
+      },
+      "hybrid_metrics": {
+        "ndcg": 0.8998082590458824,
+        "kendall_tau": 0.6428571428571429,
+        "precision_3": 0.6666666666666666
+      },
+      "improvements": {
+        "ndcg": -7.9802103024388655,
+        "kendall_tau": -18.181818181818173,
+        "precision_3": 0.0
+      },
+      "classical_time_ms": 879.2221546173096,
+      "quantum_time_ms": 124.93705749511719,
+      "total_time_ms": 1004.1592121124268,
+      "classical_ranking": [
+        1,
+        0,
+        3,
+        2,
+        5,
+        4,
+        6,
+        7
+      ],
+      "hybrid_ranking": [
+        4,
+        0,
+        2,
+        1,
+        3,
+        5,
+        6,
+        7
+      ],
+      "reranked_docs": 6
+    },
+    "Clinical Research Query": {
+      "classical_metrics": {
+        "ndcg": 0.9921198619649502,
+        "kendall_tau": 0.7142857142857143,
+        "precision_3": 1.0
+      },
+      "hybrid_metrics": {
+        "ndcg": 0.9746846162860037,
+        "kendall_tau": 0.6428571428571429,
+        "precision_3": 1.0
+      },
+      "improvements": {
+        "ndcg": -1.7573729089966,
+        "kendall_tau": -9.999999999999995,
+        "precision_3": 0.0
+      },
+      "classical_time_ms": 961.8408679962158,
+      "quantum_time_ms": 134.20581817626953,
+      "total_time_ms": 1096.0466861724854,
+      "classical_ranking": [
+        0,
+        1,
+        2,
+        5,
+        4,
+        3,
+        7,
+        6
+      ],
+      "hybrid_ranking": [
+        1,
+        0,
+        2,
+        5,
+        4,
+        3,
+        7,
+        6
+      ],
+      "reranked_docs": 6
+    },
+    "Pharmaceutical Research Query": {
+      "classical_metrics": {
+        "ndcg": 0.976713490920281,
+        "kendall_tau": 0.7142857142857143,
+        "precision_3": 0.6666666666666666
+      },
+      "hybrid_metrics": {
+        "ndcg": 0.8230955030932215,
+        "kendall_tau": 0.35714285714285715,
+        "precision_3": 0.3333333333333333
+      },
+      "improvements": {
+        "ndcg": -15.728050165695699,
+        "kendall_tau": -50.0,
+        "precision_3": -50.0
+      },
+      "classical_time_ms": 820.904016494751,
+      "quantum_time_ms": 93.03593635559082,
+      "total_time_ms": 913.9399528503418,
+      "classical_ranking": [
+        0,
+        1,
+        6,
+        2,
+        3,
+        4,
+        5,
+        7
+      ],
+      "hybrid_ranking": [
+        6,
+        1,
+        3,
+        0,
+        2,
+        4,
+        5,
+        7
+      ],
+      "reranked_docs": 6
+    }
+  }
+}

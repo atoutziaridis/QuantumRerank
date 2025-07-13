@@ -3,28 +3,28 @@
     "avg_ndcg": 0.9834808960108793,
     "avg_kendall_tau": 0.7185185185185184,
     "avg_precision_at_3": 0.8888888888888888,
-    "avg_time_ms": 834.9807262420654,
+    "avg_time_ms": 174.97769991556802,
     "num_scenarios": 3
   },
   "QuantumRerank-Quantum": {
-    "avg_ndcg": 0.8854348357692494,
-    "avg_kendall_tau": 0.24444444444444444,
+    "avg_ndcg": 0.8846932889476612,
+    "avg_kendall_tau": 0.17037037037037037,
     "avg_precision_at_3": 0.4444444444444444,
-    "avg_time_ms": 905.2368799845377,
+    "avg_time_ms": 198.4067757924398,
     "num_scenarios": 3
   },
   "QuantumRerank-Hybrid": {
-    "avg_ndcg": 0.9844047890857285,
-    "avg_kendall_tau": 0.7481481481481481,
+    "avg_ndcg": 0.9834808960108793,
+    "avg_kendall_tau": 0.7185185185185184,
     "avg_precision_at_3": 0.8888888888888888,
-    "avg_time_ms": 991.6323026021322,
+    "avg_time_ms": 560.8929793039957,
     "num_scenarios": 3
   },
   "Random-Baseline": {
-    "avg_ndcg": 0.8196182449367718,
-    "avg_kendall_tau": 0.06666666666666667,
-    "avg_precision_at_3": 0.2222222222222222,
-    "avg_time_ms": 0.05547205607096354,
+    "avg_ndcg": 0.8056038226297328,
+    "avg_kendall_tau": -0.1259259259259259,
+    "avg_precision_at_3": 0.3333333333333333,
+    "avg_time_ms": 0.06572405497233073,
     "num_scenarios": 3
   }
 }

@@ -1,0 +1,68 @@
+{
+  "Untrained (Random Parameters)": {
+    "Semantic Similarity Challenge": {
+      "ndcg_3": 1.0,
+      "precision_3": 0.6666666666666666,
+      "latency_ms": 173.01702499389648,
+      "top_3_relevant": 2,
+      "total_relevant": 4
+    },
+    "Technical Concept Matching": {
+      "ndcg_3": 1.0,
+      "precision_3": 0.6666666666666666,
+      "latency_ms": 185.35304069519043,
+      "top_3_relevant": 2,
+      "total_relevant": 4
+    },
+    "summary": {
+      "avg_ndcg_3": 1.0,
+      "avg_precision_3": 0.6666666666666666,
+      "avg_latency_ms": 179.18503284454346,
+      "num_scenarios": 2
+    }
+  },
+  "MVP (500 triplets, 5 epochs)": {
+    "Semantic Similarity Challenge": {
+      "ndcg_3": 1.0,
+      "precision_3": 1.0,
+      "latency_ms": 120.73588371276855,
+      "top_3_relevant": 3,
+      "total_relevant": 4
+    },
+    "Technical Concept Matching": {
+      "ndcg_3": 1.0,
+      "precision_3": 0.6666666666666666,
+      "latency_ms": 129.12321090698242,
+      "top_3_relevant": 2,
+      "total_relevant": 4
+    },
+    "summary": {
+      "avg_ndcg_3": 1.0,
+      "avg_precision_3": 0.8333333333333333,
+      "avg_latency_ms": 124.92954730987549,
+      "num_scenarios": 2
+    }
+  },
+  "Extended (2000 triplets, 6+ epochs)": {
+    "Semantic Similarity Challenge": {
+      "ndcg_3": 1.0,
+      "precision_3": 1.0,
+      "latency_ms": 219.0241813659668,
+      "top_3_relevant": 3,
+      "total_relevant": 4
+    },
+    "Technical Concept Matching": {
+      "ndcg_3": 1.0,
+      "precision_3": 1.0,
+      "latency_ms": 179.57282066345215,
+      "top_3_relevant": 3,
+      "total_relevant": 4
+    },
+    "summary": {
+      "avg_ndcg_3": 1.0,
+      "avg_precision_3": 1.0,
+      "avg_latency_ms": 199.29850101470947,
+      "num_scenarios": 2
+    }
+  }
+}
