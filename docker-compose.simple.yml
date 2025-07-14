@@ -1,0 +1,60 @@
+# Simple Docker Compose for QuantumRerank production deployment
+# Usage: docker-compose -f docker-compose.simple.yml up -d
+
+version: '3.8'
+
+services:
+  quantum-rerank:
+    image: quantumrerank/server:latest
+    container_name: quantum-rerank
+    ports:
+      - "8000:8000"
+    environment:
+      - QUANTUM_RERANK_API_KEY=${API_KEY:-qr-demo-key-change-this}
+      - QUANTUM_RERANK_LOG_LEVEL=${LOG_LEVEL:-INFO}
+      - REDIS_URL=redis://redis:6379
+      - ENVIRONMENT=production
+    volumes:
+      - ./config:/app/config:ro
+      - quantum_data:/app/data
+    depends_on:
+      - redis
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  redis:
+    image: redis:7-alpine
+    container_name: quantum-redis
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Optional: Nginx for load balancing and SSL
+  nginx:
+    image: nginx:alpine
+    container_name: quantum-nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.simple.conf:/etc/nginx/nginx.conf:ro
+      - ./ssl:/etc/ssl:ro
+    depends_on:
+      - quantum-rerank
+    restart: unless-stopped
+    profiles:
+      - nginx
+
+volumes:
+  quantum_data:
+  redis_data:

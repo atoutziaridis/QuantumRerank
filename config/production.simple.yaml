@@ -1,0 +1,33 @@
+# Simple production configuration for QuantumRerank
+# Optimized for plug-and-play deployment
+
+quantum_rerank:
+  api:
+    host: "0.0.0.0"
+    port: 8000
+    workers: 4
+    
+  quantum:
+    method: "hybrid"
+    cache_enabled: true
+    n_qubits: 4
+    max_circuit_depth: 15
+    
+  performance:
+    max_request_size: "10MB"
+    timeout_seconds: 30
+    batch_size: 50
+    
+  logging:
+    level: "INFO"
+    format: "json"
+    
+  redis:
+    url: "${REDIS_URL:-redis://localhost:6379}"
+    
+  auth:
+    api_key: "${QUANTUM_RERANK_API_KEY:-qr-demo-key-change-this}"
+    
+  security:
+    rate_limit: "100/minute"
+    cors_enabled: true
