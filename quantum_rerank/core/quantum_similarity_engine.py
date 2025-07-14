@@ -24,6 +24,9 @@ from .embeddings import EmbeddingProcessor
 from .swap_test import QuantumSWAPTest
 from ..ml.parameter_predictor import QuantumParameterPredictor, ParameterPredictorConfig
 from ..ml.parameterized_circuits import ParameterizedQuantumCircuits
+from .quantum_kernel_engine import QuantumKernelEngine, QuantumKernelConfig
+from .quantum_geometric_similarity import QuantumGeometricSimilarity, GeometricSimilarityConfig
+from .quantum_compression import QuantumCompressionHead, QuantumCompressionConfig
 
 logger = logging.getLogger(__name__)
 
@@ -33,6 +36,8 @@ class SimilarityMethod(Enum):
     QUANTUM_FIDELITY = "quantum_fidelity"
     CLASSICAL_COSINE = "classical_cosine"
     HYBRID_WEIGHTED = "hybrid_weighted"
+    QUANTUM_KERNEL = "quantum_kernel"
+    QUANTUM_GEOMETRIC = "quantum_geometric"
 
 
 @dataclass
@@ -49,6 +54,9 @@ class SimilarityEngineConfig:
     adaptive_weighting: bool = True  # Dynamically adjust quantum/classical weights
     confidence_threshold: float = 0.8  # Confidence threshold for method selection
     use_ensemble: bool = True  # Use ensemble of multiple similarity methods
+    # Compression settings
+    enable_compression: bool = False  # Enable quantum-inspired compression
+    compression_config: QuantumCompressionConfig = None  # Compression configuration
     
     def __post_init__(self):
         if self.hybrid_weights is None:
@@ -104,6 +112,29 @@ class QuantumSimilarityEngine:
             self.config.n_qubits, self.config.n_layers
         )
         
+        # Initialize new kernel and geometric similarity engines
+        kernel_config = QuantumKernelConfig(
+            n_qubits=self.config.n_qubits,
+            enable_caching=self.config.enable_caching,
+            max_cache_size=self.config.max_cache_size
+        )
+        self.kernel_engine = QuantumKernelEngine(kernel_config)
+        
+        geometric_config = GeometricSimilarityConfig(
+            enable_caching=self.config.enable_caching,
+            max_cache_size=self.config.max_cache_size,
+            enable_asymmetry=True
+        )
+        self.geometric_engine = QuantumGeometricSimilarity(geometric_config)
+        
+        # Initialize compression head if enabled
+        if self.config.enable_compression:
+            compression_config = self.config.compression_config or QuantumCompressionConfig()
+            self.compression_head = QuantumCompressionHead(compression_config)
+            logger.info(f"Quantum compression enabled: {compression_config.input_dim} -> {compression_config.output_dim}")
+        else:
+            self.compression_head = None
+        
         logger.debug("All similarity engine components initialized")
     
     def compute_similarity(self, 
@@ -142,6 +173,10 @@ class QuantumSimilarityEngine:
                 similarity, metadata = self._compute_quantum_similarity(text1, text2)
             elif method == SimilarityMethod.HYBRID_WEIGHTED:
                 similarity, metadata = self._compute_hybrid_similarity(text1, text2)
+            elif method == SimilarityMethod.QUANTUM_KERNEL:
+                similarity, metadata = self._compute_kernel_similarity(text1, text2)
+            elif method == SimilarityMethod.QUANTUM_GEOMETRIC:
+                similarity, metadata = self._compute_geometric_similarity(text1, text2)
             else:
                 raise ValueError(f"Unknown similarity method: {method}")
             
@@ -314,6 +349,39 @@ class QuantumSimilarityEngine:
         
         return ensemble_sim
     
+    def _compute_kernel_similarity(self, text1: str, text2: str) -> Tuple[float, Dict]:
+        """Compute quantum kernel-based similarity using existing fidelity infrastructure."""
+        # Use kernel engine to compute similarity
+        texts = [text1, text2]
+        kernel_matrix = self.kernel_engine.compute_kernel_matrix(texts, texts)
+        
+        # Extract similarity (off-diagonal element)
+        similarity = kernel_matrix[0, 1]
+        
+        metadata = {
+            'method_details': 'quantum_kernel',
+            'kernel_matrix_shape': kernel_matrix.shape,
+            'kernel_diagonal': [kernel_matrix[0, 0], kernel_matrix[1, 1]],
+            'success': True
+        }
+        
+        return float(similarity), metadata
+    
+    def _compute_geometric_similarity(self, text1: str, text2: str) -> Tuple[float, Dict]:
+        """Compute quantum geometric similarity with asymmetric scoring."""
+        # Use geometric engine for context-aware similarity
+        similarity_score, metadata = self.geometric_engine.compute_contextual_similarity(
+            text1, text2, user_context=None, session_context=None
+        )
+        
+        # Update metadata for consistency
+        metadata.update({
+            'method_details': 'quantum_geometric',
+            'success': True
+        })
+        
+        return float(similarity_score), metadata
+    
     def compute_similarities_batch(self, 
                                  query: str,
                                  candidates: List[str],
@@ -343,6 +411,10 @@ class QuantumSimilarityEngine:
                 results = self._batch_quantum_similarities(query, candidates)
             elif method == SimilarityMethod.HYBRID_WEIGHTED:
                 results = self._batch_hybrid_similarities(query, candidates)
+            elif method == SimilarityMethod.QUANTUM_KERNEL:
+                results = self._batch_kernel_similarities(query, candidates)
+            elif method == SimilarityMethod.QUANTUM_GEOMETRIC:
+                results = self._batch_geometric_similarities(query, candidates)
             else:
                 raise ValueError(f"Unknown similarity method: {method}")
             
@@ -464,6 +536,54 @@ class QuantumSimilarityEngine:
         
         return results
     
+    def _batch_kernel_similarities(self, 
+                                 query: str,
+                                 candidates: List[str]) -> List[Tuple[str, float, Dict]]:
+        """Efficient batch quantum kernel similarity computation."""
+        # Use kernel engine for batch computation
+        all_texts = [query] + candidates
+        kernel_matrix = self.kernel_engine.compute_kernel_matrix(all_texts, all_texts)
+        
+        results = []
+        for i, candidate in enumerate(candidates):
+            # Extract similarity between query (index 0) and candidate (index i+1)
+            similarity = kernel_matrix[0, i + 1]
+            
+            metadata = {
+                'method': 'quantum_kernel',
+                'batch_index': i,
+                'kernel_diagonal_query': kernel_matrix[0, 0],
+                'kernel_diagonal_candidate': kernel_matrix[i + 1, i + 1],
+                'success': True
+            }
+            
+            results.append((candidate, float(similarity), metadata))
+        
+        return results
+    
+    def _batch_geometric_similarities(self, 
+                                    query: str,
+                                    candidates: List[str]) -> List[Tuple[str, float, Dict]]:
+        """Efficient batch quantum geometric similarity computation."""
+        results = []
+        
+        for i, candidate in enumerate(candidates):
+            # Use geometric engine for individual similarity computation
+            similarity_score, metadata = self.geometric_engine.compute_contextual_similarity(
+                query, candidate, user_context=None, session_context=None
+            )
+            
+            # Update metadata for batch processing
+            metadata.update({
+                'method': 'quantum_geometric',
+                'batch_index': i,
+                'success': True
+            })
+            
+            results.append((candidate, float(similarity_score), metadata))
+        
+        return results
+    
     def rerank_candidates(self, 
                         query: str,
                         candidates: List[str],
@@ -575,7 +695,9 @@ class QuantumSimilarityEngine:
         methods = [
             SimilarityMethod.CLASSICAL_COSINE,
             SimilarityMethod.QUANTUM_FIDELITY,
-            SimilarityMethod.HYBRID_WEIGHTED
+            SimilarityMethod.HYBRID_WEIGHTED,
+            SimilarityMethod.QUANTUM_KERNEL,
+            SimilarityMethod.QUANTUM_GEOMETRIC
         ]
         
         benchmark_results = {}
