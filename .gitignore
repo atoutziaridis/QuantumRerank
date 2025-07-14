@@ -130,11 +130,19 @@ dmypy.json
 
 # QuantumRerank specific
 *.log
+server*.log
 .quantum_cache/
 models/
 data/
 experiments/
 benchmarks/results/
+results/experiments/
+*_results.json
+.env.deploy
+
+# Quantum simulation cache
+quantum_circuits_cache/
+quantum_state_cache/
 
 # IDE specific
 .vscode/
