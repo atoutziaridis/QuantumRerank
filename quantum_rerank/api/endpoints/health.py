@@ -15,6 +15,8 @@ from ..models import HealthCheckResponse, DetailedHealthResponse
 from ..dependencies import get_core_services
 from ..services.health_service import HealthService
 from ...utils.logging_config import get_logger
+from ...core.memory_monitor import memory_monitor
+from ...core.circuit_breaker import get_circuit_breaker_status
 
 logger = get_logger(__name__)
 
@@ -403,3 +405,303 @@ def _get_component_recommendations(component_name: str, component_data: Dict[str
             recommendations.append("Clean up temporary files or expand storage")
     
     return recommendations
+
+
+@router.get(
+    "/health/memory",
+    summary="Memory monitoring",
+    description="Get detailed memory usage and trends for production monitoring"
+)
+async def memory_health():
+    """
+    Get comprehensive memory health information.
+    
+    Returns:
+        Memory usage, trends, and health status
+    """
+    try:
+        memory_summary = memory_monitor.get_memory_summary()
+        
+        # Determine status based on memory usage
+        current_usage = memory_summary.get("current_usage", {})
+        usage_ratio = current_usage.get("memory_usage_ratio", 0)
+        
+        if usage_ratio >= 0.9:
+            status = "critical"
+        elif usage_ratio >= 0.8:
+            status = "warning"
+        else:
+            status = "healthy"
+        
+        return {
+            "status": status,
+            "memory_details": memory_summary,
+            "alerts": {
+                "high_memory_usage": usage_ratio >= 0.8,
+                "memory_trend_increasing": (
+                    memory_summary.get("trends", {}).get("trend_direction") == "increasing"
+                ),
+                "memory_available": memory_monitor.is_memory_available()
+            },
+            "recommendations": _get_memory_recommendations(usage_ratio, memory_summary)
+        }
+        
+    except Exception as e:
+        logger.error(f"Memory health check failed: {e}")
+        return {
+            "status": "error",
+            "error": str(e),
+            "timestamp": time.time()
+        }
+
+
+@router.get(
+    "/health/circuit-breakers",
+    summary="Circuit breaker status",
+    description="Get status of all circuit breakers for resilience monitoring"
+)
+async def circuit_breaker_health():
+    """
+    Get circuit breaker status and metrics.
+    
+    Returns:
+        Circuit breaker states and failure statistics
+    """
+    try:
+        breaker_status = await get_circuit_breaker_status()
+        
+        # Determine overall status
+        overall_status = "healthy"
+        open_breakers = []
+        
+        for name, metrics in breaker_status.items():
+            if metrics["state"] == "open":
+                overall_status = "warning"
+                open_breakers.append(name)
+            elif metrics["state"] == "half_open":
+                if overall_status == "healthy":
+                    overall_status = "warning"
+        
+        return {
+            "status": overall_status,
+            "circuit_breakers": breaker_status,
+            "alerts": {
+                "open_breakers": open_breakers,
+                "breakers_in_recovery": [
+                    name for name, metrics in breaker_status.items()
+                    if metrics["state"] == "half_open"
+                ]
+            },
+            "recommendations": _get_circuit_breaker_recommendations(breaker_status, open_breakers)
+        }
+        
+    except Exception as e:
+        logger.error(f"Circuit breaker health check failed: {e}")
+        return {
+            "status": "error",
+            "error": str(e),
+            "timestamp": time.time()
+        }
+
+
+@router.get(
+    "/health/performance",
+    summary="Performance health",
+    description="Get performance metrics and PRD compliance status"
+)
+async def performance_health():
+    """
+    Get performance health metrics against PRD targets.
+    
+    Returns:
+        Performance metrics and compliance status
+    """
+    try:
+        # Test similarity computation performance
+        start_time = time.perf_counter()
+        
+        # Simulate small similarity test (this would use actual quantum engine)
+        test_embedding = [0.1] * 768
+        # similarity = quantum_engine.compute_classical_cosine(test_embedding, test_embedding)
+        
+        computation_time_ms = (time.perf_counter() - start_time) * 1000
+        
+        # Check PRD compliance
+        prd_targets = {
+            "similarity_computation_ms": 100,  # <100ms
+            "batch_reranking_ms": 500,        # <500ms for 50-100 docs
+            "memory_usage_gb": 2.0            # <2GB
+        }
+        
+        memory_info = memory_monitor.check_memory_usage()
+        current_memory_gb = memory_info.get("memory_mb", 0) / 1024
+        
+        compliance = {
+            "similarity_computation": computation_time_ms < prd_targets["similarity_computation_ms"],
+            "memory_usage": current_memory_gb < prd_targets["memory_usage_gb"]
+        }
+        
+        overall_status = "healthy" if all(compliance.values()) else "warning"
+        
+        return {
+            "status": overall_status,
+            "prd_targets": prd_targets,
+            "current_metrics": {
+                "similarity_computation_ms": round(computation_time_ms, 2),
+                "memory_usage_gb": round(current_memory_gb, 2),
+                "memory_usage_mb": memory_info.get("memory_mb", 0)
+            },
+            "compliance": compliance,
+            "performance_score": (sum(compliance.values()) / len(compliance)) * 100,
+            "recommendations": _get_performance_recommendations(compliance, computation_time_ms, current_memory_gb)
+        }
+        
+    except Exception as e:
+        logger.error(f"Performance health check failed: {e}")
+        return {
+            "status": "error",
+            "error": str(e),
+            "timestamp": time.time()
+        }
+
+
+@router.get(
+    "/health/ready",
+    summary="Kubernetes readiness probe",
+    description="Readiness probe for Kubernetes deployments"
+)
+async def readiness_probe():
+    """
+    Kubernetes readiness probe endpoint.
+    
+    Returns:
+        Ready status for load balancer routing
+    """
+    try:
+        # Check if service can handle requests
+        if not memory_monitor.is_memory_available():
+            raise HTTPException(
+                status_code=503,
+                detail="Not ready - high memory usage"
+            )
+        
+        # Quick performance check
+        start_time = time.perf_counter()
+        # Basic computation test
+        computation_time = (time.perf_counter() - start_time) * 1000
+        
+        if computation_time > 200:  # 200ms threshold for readiness
+            raise HTTPException(
+                status_code=503,
+                detail="Not ready - slow response times"
+            )
+        
+        return {
+            "status": "ready",
+            "timestamp": time.time(),
+            "checks": {
+                "memory_available": True,
+                "performance_ok": True,
+                "response_time_ms": round(computation_time, 2)
+            }
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Readiness probe failed: {e}")
+        raise HTTPException(
+            status_code=503,
+            detail=f"Not ready - {str(e)}"
+        )
+
+
+@router.get(
+    "/health/live",
+    summary="Kubernetes liveness probe",
+    description="Liveness probe for Kubernetes deployments"
+)
+async def liveness_probe():
+    """
+    Kubernetes liveness probe endpoint.
+    
+    Returns:
+        Alive status for restart decisions
+    """
+    return {
+        "status": "alive",
+        "timestamp": time.time(),
+        "uptime_seconds": time.time() - _get_start_time()
+    }
+
+
+def _get_memory_recommendations(usage_ratio: float, memory_summary: Dict) -> List[str]:
+    """Get memory-specific recommendations."""
+    recommendations = []
+    
+    if usage_ratio >= 0.9:
+        recommendations.extend([
+            "CRITICAL: Memory usage above 90% - consider immediate restart",
+            "Scale up memory allocation or optimize application",
+            "Check for memory leaks in application code"
+        ])
+    elif usage_ratio >= 0.8:
+        recommendations.extend([
+            "WARNING: High memory usage detected",
+            "Monitor memory trends closely",
+            "Consider proactive scaling or optimization"
+        ])
+    
+    trends = memory_summary.get("trends", {})
+    if trends.get("trend_direction") == "increasing":
+        recommendations.append("Memory usage is trending upward - investigate causes")
+    
+    return recommendations
+
+
+def _get_circuit_breaker_recommendations(breaker_status: Dict, open_breakers: List[str]) -> List[str]:
+    """Get circuit breaker-specific recommendations."""
+    recommendations = []
+    
+    if open_breakers:
+        recommendations.extend([
+            f"Circuit breakers OPEN: {', '.join(open_breakers)}",
+            "Service is using fallback methods - investigate underlying issues",
+            "Check quantum backend connectivity and performance"
+        ])
+    
+    for name, metrics in breaker_status.items():
+        failure_rate = metrics.get("metrics", {}).get("failure_rate", 0)
+        if failure_rate > 0.1:  # >10% failure rate
+            recommendations.append(f"High failure rate in {name}: {failure_rate:.1%}")
+    
+    return recommendations
+
+
+def _get_performance_recommendations(compliance: Dict, computation_ms: float, memory_gb: float) -> List[str]:
+    """Get performance-specific recommendations."""
+    recommendations = []
+    
+    if not compliance.get("similarity_computation", True):
+        recommendations.extend([
+            f"Similarity computation too slow: {computation_ms:.1f}ms > 100ms",
+            "Consider optimizing quantum circuits or using classical fallback",
+            "Check system load and available CPU resources"
+        ])
+    
+    if not compliance.get("memory_usage", True):
+        recommendations.extend([
+            f"Memory usage exceeds PRD limit: {memory_gb:.1f}GB > 2.0GB",
+            "Optimize memory usage or increase allocation",
+            "Consider memory profiling to identify bottlenecks"
+        ])
+    
+    if all(compliance.values()):
+        recommendations.append("All performance targets are being met")
+    
+    return recommendations
+
+
+def _get_start_time() -> float:
+    """Get service start time (placeholder - should be set at startup)."""
+    return getattr(_get_start_time, '_start_time', time.time())

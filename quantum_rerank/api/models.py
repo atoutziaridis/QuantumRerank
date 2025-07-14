@@ -28,13 +28,13 @@ class RerankRequest(BaseModel):
         ...,
         description="Query text to compare against candidates",
         min_length=1,
-        max_length=5000
+        max_length=10000  # Extended limit as per Task 28
     )
     candidates: List[str] = Field(
         ...,
         description="List of candidate documents to rerank",
         min_items=1,
-        max_items=100  # PRD specification: 50-100 documents
+        max_items=1000  # Extended to 1000 as per Task 28
     )
     top_k: Optional[int] = Field(
         default=10,
@@ -53,13 +53,22 @@ class RerankRequest(BaseModel):
     
     @validator('candidates')
     def validate_candidates(cls, v):
-        """Ensure all candidates are non-empty strings."""
+        """Ensure all candidates are non-empty strings with proper length limits."""
         for i, candidate in enumerate(v):
             if not candidate or not candidate.strip():
                 raise ValueError(f"Candidate at index {i} is empty")
-            if len(candidate) > 5000:
-                raise ValueError(f"Candidate at index {i} exceeds maximum length")
-        return v
+            if len(candidate) > 50000:  # 50K character limit per document
+                raise ValueError(f"Candidate at index {i} exceeds maximum length (50000 characters)")
+        return [candidate.strip() for candidate in v]
+    
+    @validator('query')
+    def validate_query(cls, v):
+        """Validate query string with enhanced checks."""
+        if not v or not v.strip():
+            raise ValueError('Query cannot be empty')
+        if len(v.strip()) > 10000:
+            raise ValueError('Query too long (max 10000 characters)')
+        return v.strip()
 
     class Config:
         schema_extra = {

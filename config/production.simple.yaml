@@ -17,6 +17,22 @@ quantum_rerank:
     max_request_size: "10MB"
     timeout_seconds: 30
     batch_size: 50
+    memory_limit_gb: 2.0
+    similarity_timeout_ms: 100
+    batch_timeout_ms: 500
+    
+  stability:
+    circuit_breaker:
+      failure_threshold: 3
+      timeout_seconds: 30
+      operation_timeout: 15.0
+    memory_monitor:
+      warning_threshold: 0.8
+      critical_threshold: 0.9
+      check_interval_seconds: 10
+    error_handling:
+      include_traceback: false
+      rate_limit_retry_after: 60
     
   logging:
     level: "INFO"
