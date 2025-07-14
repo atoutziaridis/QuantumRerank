@@ -1,0 +1,41 @@
+{
+  "test_name": "optimized_few_shot_biomedical",
+  "total_time_seconds": 8.014907836914062,
+  "results": {
+    "1": {
+      "quantum_accuracy": 0.16666666666666666,
+      "classical_accuracy": 1.0,
+      "improvement_pct": -83.33333333333334,
+      "quantum_time": 0.33308911323547363,
+      "classical_time": 0.25759124755859375
+    },
+    "2": {
+      "quantum_accuracy": 0.0,
+      "classical_accuracy": 0.8333333333333334,
+      "improvement_pct": -100.0,
+      "quantum_time": 0.4177830219268799,
+      "classical_time": 0.33338093757629395
+    },
+    "3": {
+      "quantum_accuracy": 0.16666666666666666,
+      "classical_accuracy": 0.8333333333333334,
+      "improvement_pct": -80.0,
+      "quantum_time": 0.5060849189758301,
+      "classical_time": 0.4109947681427002
+    },
+    "5": {
+      "quantum_accuracy": 0.0,
+      "classical_accuracy": 0.0,
+      "improvement_pct": 0,
+      "quantum_time": 1.9073486328125e-06,
+      "classical_time": 1.1920928955078125e-06
+    }
+  },
+  "analysis": {
+    "significant_wins": 0,
+    "best_improvement": 0,
+    "best_shot_count": 5,
+    "recommendation": "MOVE_ON: Try adversarial robustness test",
+    "quantum_advantage_found": false
+  }
+}

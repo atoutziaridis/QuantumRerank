@@ -1,0 +1,130 @@
+{
+  "test_name": "molecular_similarity",
+  "total_time_seconds": 7.783853054046631,
+  "results": {
+    "cardiovascular_drugs": {
+      "quantum": {
+        "ndcg": 0.7736004789339339,
+        "kendall_tau": -0.2777777777777778,
+        "precision_3": 0.0,
+        "similar_in_top3": 0,
+        "actual_ranking": [
+          5,
+          7,
+          4,
+          6,
+          1,
+          2,
+          3,
+          8,
+          0
+        ],
+        "success": true
+      },
+      "classical": {
+        "ndcg": 0.97463510341484,
+        "kendall_tau": 0.6666666666666666,
+        "precision_3": 1.0,
+        "similar_in_top3": 3,
+        "actual_ranking": [
+          1,
+          0,
+          2,
+          4,
+          7,
+          5,
+          3,
+          6,
+          8
+        ],
+        "success": true
+      },
+      "quantum_time": 0.17141318321228027,
+      "classical_time": 0.1151578426361084,
+      "improvement_ndcg": -20.62665542996952
+    },
+    "antibiotics": {
+      "quantum": {
+        "ndcg": 0.8735006918983634,
+        "kendall_tau": 0.0,
+        "precision_3": 0.3333333333333333,
+        "similar_in_top3": 1,
+        "actual_ranking": [
+          2,
+          4,
+          7,
+          3,
+          1,
+          6,
+          8,
+          5,
+          0
+        ],
+        "success": true
+      },
+      "classical": {
+        "ndcg": 0.9836041066425024,
+        "kendall_tau": 0.6666666666666666,
+        "precision_3": 0.6666666666666666,
+        "similar_in_top3": 2,
+        "actual_ranking": [
+          0,
+          1,
+          5,
+          3,
+          2,
+          4,
+          7,
+          8,
+          6
+        ],
+        "success": true
+      },
+      "quantum_time": 0.1497969627380371,
+      "classical_time": 0.12115907669067383,
+      "improvement_ndcg": -11.193875056090715
+    },
+    "neurology_drugs": {
+      "quantum": {
+        "ndcg": 0.921086292730051,
+        "kendall_tau": 0.3888888888888889,
+        "precision_3": 0.6666666666666666,
+        "similar_in_top3": 2,
+        "actual_ranking": [
+          3,
+          1,
+          0,
+          6,
+          2,
+          8,
+          5,
+          4,
+          7
+        ],
+        "success": true
+      },
+      "classical": {
+        "ndcg": 0.9745403674273827,
+        "kendall_tau": 0.6666666666666666,
+        "precision_3": 0.6666666666666666,
+        "similar_in_top3": 2,
+        "actual_ranking": [
+          1,
+          0,
+          3,
+          5,
+          2,
+          4,
+          7,
+          8,
+          6
+        ],
+        "success": true
+      },
+      "quantum_time": 0.13495707511901855,
+      "classical_time": 0.22995781898498535,
+      "improvement_ndcg": -5.485054953489626
+    }
+  },
+  "analysis": {
+    "molecular_advantage": 

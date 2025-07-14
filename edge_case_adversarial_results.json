@@ -1,0 +1,449 @@
+{
+  "test_name": "edge_case_adversarial",
+  "total_time_seconds": 18.224844694137573,
+  "results": {
+    "edge_case_evaluation": {
+      "quantum_results": [
+        {
+          "overall_accuracy": 0.2692307692307692,
+          "type_accuracies": {
+            "minimal_difference": 0.2,
+            "maximal_perturbation": 0.25,
+            "semantic_paradox": 0.3333333333333333,
+            "contextual_ambiguity": 0.3333333333333333,
+            "implicit_negation": 0.0,
+            "compound_logic": 0.3333333333333333,
+            "temporal_paradox": 0.5,
+            "quantifier_shift": 0.3333333333333333
+          },
+          "total_scenarios": 26,
+          "success_rate_by_type": {
+            "minimal_difference": "20.0%",
+            "maximal_perturbation": "25.0%",
+            "semantic_paradox": "33.3%",
+            "contextual_ambiguity": "33.3%",
+            "implicit_negation": "0.0%",
+            "compound_logic": "33.3%",
+            "temporal_paradox": "50.0%",
+            "quantifier_shift": "33.3%"
+          }
+        },
+        {
+          "overall_accuracy": 0.23076923076923078,
+          "type_accuracies": {
+            "minimal_difference": 0.2,
+            "maximal_perturbation": 0.25,
+            "semantic_paradox": 0.3333333333333333,
+            "contextual_ambiguity": 0.0,
+            "implicit_negation": 0.3333333333333333,
+            "compound_logic": 0.3333333333333333,
+            "temporal_paradox": 0.0,
+            "quantifier_shift": 0.3333333333333333
+          },
+          "total_scenarios": 26,
+          "success_rate_by_type": {
+            "minimal_difference": "20.0%",
+            "maximal_perturbation": "25.0%",
+            "semantic_paradox": "33.3%",
+            "contextual_ambiguity": "0.0%",
+            "implicit_negation": "33.3%",
+            "compound_logic": "33.3%",
+            "temporal_paradox": "0.0%",
+            "quantifier_shift": "33.3%"
+          }
+        },
+        {
+          "overall_accuracy": 0.38461538461538464,
+          "type_accuracies": {
+            "minimal_difference": 0.2,
+            "maximal_perturbation": 0.25,
+            "semantic_paradox": 0.3333333333333333,
+            "contextual_ambiguity": 0.3333333333333333,
+            "implicit_negation": 0.3333333333333333,
+            "compound_logic": 1.0,
+            "temporal_paradox": 0.5,
+            "quantifier_shift": 0.3333333333333333
+          },
+          "total_scenarios": 26,
+          "success_rate_by_type": {
+            "minimal_difference": "20.0%",
+            "maximal_perturbation": "25.0%",
+            "semantic_paradox": "33.3%",
+            "contextual_ambiguity": "33.3%",
+            "implicit_negation": "33.3%",
+            "compound_logic": "100.0%",
+            "temporal_paradox": "50.0%",
+            "quantifier_shift": "33.3%"
+          }
+        }
+      ],
+      "classical_results": [
+        {
+          "overall_accuracy": 0.11538461538461539,
+          "type_accuracies": {
+            "minimal_difference": 0.0,
+            "maximal_perturbation": 0.75,
+            "semantic_paradox": 0.0,
+            "contextual_ambiguity": 0.0,
+            "implicit_negation": 0.0,
+            "compound_logic": 0.0,
+            "temporal_paradox": 0.0,
+            "quantifier_shift": 0.0
+          },
+          "total_scenarios": 26,
+          "success_rate_by_type": {
+            "minimal_difference": "0.0%",
+            "maximal_perturbation": "75.0%",
+            "semantic_paradox": "0.0%",
+            "contextual_ambiguity": "0.0%",
+            "implicit_negation": "0.0%",
+            "compound_logic": "0.0%",
+            "temporal_paradox": "0.0%",
+            "quantifier_shift": "0.0%"
+          }
+        },
+        {
+          "overall_accuracy": 0.11538461538461539,
+          "type_accuracies": {
+            "minimal_difference": 0.0,
+            "maximal_perturbation": 0.75,
+            "semantic_paradox": 0.0,
+            "contextual_ambiguity": 0.0,
+            "implicit_negation": 0.0,
+            "compound_logic": 0.0,
+            "temporal_paradox": 0.0,
+            "quantifier_shift": 0.0
+          },
+          "total_scenarios": 26,
+          "success_rate_by_type": {
+            "minimal_difference": "0.0%",
+            "maximal_perturbation": "75.0%",
+            "semantic_paradox": "0.0%",
+            "contextual_ambiguity": "0.0%",
+            "implicit_negation": "0.0%",
+            "compound_logic": "0.0%",
+            "temporal_paradox": "0.0%",
+            "quantifier_shift": "0.0%"
+          }
+        },
+        {
+          "overall_accuracy": 0.11538461538461539,
+          "type_accuracies": {
+            "minimal_difference": 0.0,
+            "maximal_perturbation": 0.75,
+            "semantic_paradox": 0.0,
+            "contextual_ambiguity": 0.0,
+            "implicit_negation": 0.0,
+            "compound_logic": 0.0,
+            "temporal_paradox": 0.0,
+            "quantifier_shift": 0.0
+          },
+          "total_scenarios": 26,
+          "success_rate_by_type": {
+            "minimal_difference": "0.0%",
+            "maximal_perturbation": "75.0%",
+            "semantic_paradox": "0.0%",
+            "contextual_ambiguity": "0.0%",
+            "implicit_negation": "0.0%",
+            "compound_logic": "0.0%",
+            "temporal_paradox": "0.0%",
+            "quantifier_shift": "0.0%"
+          }
+        }
+      ],
+      "n_trials": 3
+    },
+    "performance_analysis": {
+      "overall": {
+        "quantum_mean": 0.2948717948717949,
+        "quantum_std": 0.08006407690254358,
+        "classical_mean": 0.11538461538461538,
+        "classical_std": 1.6996749443881478e-17,
+        "advantage": 0.17948717948717952
+      },
+      "by_edge_type": {
+        "minimal_difference": {
+          "quantum_mean": 0.20000000000000004,
+          "classical_mean": 0.0,
+          "advantage": 0.20000000000000004,
+          "quantum_wins": 3,
+          "total_trials": 3
+        },
+        "maximal_perturbation": {
+          "quantum_mean": 0.25,
+          "classical_mean": 0.75,
+          "advantage": -0.5,
+          "quantum_wins": 0,
+          "total_trials": 3
+        },
+        "semantic_paradox": {
+          "quantum_mean": 0.3333333333333333,
+          "classical_mean": 0.0,
+          "advantage": 0.3333333333333333,
+          "quantum_wins": 3,
+          "total_trials": 3
+        },
+        "contextual_ambiguity": {
+          "quantum_mean": 0.2222222222222222,
+          "classical_mean": 0.0,
+          "advantage": 0.2222222222222222,
+          "quantum_wins": 2,
+          "total_trials": 3
+        },
+        "implicit_negation": {
+          "quantum_mean": 0.2222222222222222,
+          "classical_mean": 0.0,
+          "advantage": 0.2222222222222222,
+          "quantum_wins": 2,
+          "total_trials": 3
+        },
+        "compound_logic": {
+          "quantum_mean": 0.5555555555555555,
+          "classical_mean": 0.0,
+          "advantage": 0.5555555555555555,
+          "quantum_wins": 3,
+          "total_trials": 3
+        },
+        "temporal_paradox": {
+          "quantum_mean": 0.3333333333333333,
+          "classical_mean": 0.0,
+          "advantage": 0.3333333333333333,
+          "quantum_wins": 2,
+          "total_trials": 3
+        },
+        "quantifier_shift": {
+          "quantum_mean": 0.3333333333333333,
+          "classical_mean": 0.0,
+          "advantage": 0.3333333333333333,
+          "quantum_wins": 3,
+          "total_trials": 3
+        }
+      }
+    },
+    "scenarios": [
+      {
+        "query": "Patient condition is stable and improving",
+        "correct": "Medical status shows stability with positive progress",
+        "adversarial": "Patient condition is stable and not improving",
+        "type": "minimal_difference",
+        "challenge": "Single word negation with high lexical overlap",
+        "difficulty": "extreme"
+      },
+      {
+        "query": "Treatment works in 90% of cases",
+        "correct": "Therapy demonstrates efficacy in ninety percent of patients",
+        "adversarial": "Treatment works in 9% of cases",
+        "type": "minimal_difference",
+        "challenge": "Single digit change with massive semantic impact",
+        "difficulty": "extreme"
+      },
+      {
+        "query": "Drug is safe for pregnant women",
+        "correct": "Medication poses no risk to expectant mothers",
+        "adversarial": "Drug is unsafe for pregnant women",
+        "type": "minimal_difference",
+        "challenge": "Single prefix changes safety profile completely",
+        "difficulty": "extreme"
+      },
+      {
+        "query": "Surgery is necessary before radiation therapy",
+        "correct": "Surgical intervention required prior to radiological treatment",
+        "adversarial": "Surgery is necessary after radiation therapy",
+        "type": "minimal_difference",
+        "challenge": "Critical temporal ordering with life-threatening implications",
+        "difficulty": "extreme"
+      },
+      {
+        "query": "Virus spreads through airborne transmission",
+        "correct": "Pathogen transmits via respiratory droplets in air",
+        "adversarial": "Virus spreads through waterborne transmission",
+        "type": "minimal_difference",
+        "challenge": "Single word changes transmission vector",
+        "difficulty": "extreme"
+      },
+      {
+        "query": "Increase medication dosage gradually over time for safety",
+        "correct": "Slowly escalate drug amounts progressively to ensure patient wellbeing",
+        "adversarial": "Decrease medication dosage rapidly at once for danger",
+        "type": "maximal_perturbation",
+        "challenge": "Every key concept inverted while maintaining structure",
+        "difficulty": "extreme"
+      },
+      {
+        "query": "Early detection significantly improves survival rates",
+        "correct": "Prompt identification substantially enhances patient longevity outcomes",
+        "adversarial": "Late detection significantly worsens death rates",
+        "type": "maximal_perturbation",
+        "challenge": "All positive concepts flipped to negative",
+        "difficulty": "extreme"
+      },
+      {
+        "query": "New drug prevents disease progression in all patients",
+        "correct": "Novel medication halts illness advancement across entire patient population",
+        "adversarial": "Old drug causes disease progression in no patients",
+        "type": "maximal_perturbation",
+        "challenge": "Multiple concept inversions with logical complexity",
+        "difficulty": "extreme"
+      },
+      {
+        "query": "High-risk patients require immediate intensive care",
+        "correct": "Critical condition individuals need urgent specialized treatment",
+        "adversarial": "Low-risk patients avoid delayed minimal care",
+        "type": "maximal_perturbation",
+        "challenge": "Risk level, timing, and care intensity all inverted",
+        "difficulty": "extreme"
+      },
+      {
+        "query": "This statement is always true in medical practice",
+        "correct": "The assertion consistently applies to healthcare situations",
+        "adversarial": "This statement is always false in medical practice",
+        "type": "semantic_paradox",
+        "challenge": "Self-referential contradiction creates logical paradox",
+        "difficulty": "extreme"
+      },
+      {
+        "query": "All rules have exceptions except this rule",
+        "correct": "Every guideline permits deviation excluding this principle",
+        "adversarial": "All rules have exceptions including this rule",
+        "type": "semantic_paradox",
+        "challenge": "Self-referential rule about rules creates paradox",
+        "difficulty": "extreme"
+      },
+      {
+        "query": "Nobody knows everything about this disease",
+        "correct": "No individual possesses complete knowledge of this condition",
+        "adversarial": "Everybody knows nothing about this disease",
+        "type": "semantic_paradox",
+        "challenge": "Universal quantifier paradox with knowledge claims",
+        "difficulty": "extreme"
+      },
+      {
+        "query": "Patient temperature reading is critical",
+        "correct": "Body heat measurement indicates severe medical concern",
+        "adversarial": "Patient temperature reading is critical for diagnosis",
+        "type": "contextual_ambiguity",
+        "challenge": "Same words with completely different contextual implications",
+        "difficulty": "extreme"
+      },
+      {
+        "query": "Treatment should be aggressive in this case",
+        "correct": "Therapy must be intensive and forceful for this patient",
+        "adversarial": "Treatment should be aggressive in this legal case",
+        "type": "contextual_ambiguity",
+        "challenge": "Word 'case' shifts medical to legal context",
+        "difficulty": "extreme"
+      },
+      {
+        "query": "Discharge patient when symptoms resolve completely",
+        "correct": "Release individual after full symptom resolution",
+        "adversarial": "Discharge patient when symptoms resolve the conflict",
+        "type": "contextual_ambiguity",
+        "challenge": "Homonymous 'resolve' changes medical to interpersonal context",
+        "difficulty": "extreme"
+      },
+      {
+        "query": "Treatment rarely fails to improve symptoms",
+        "correct": "Therapy typically succeeds in enhancing patient condition",
+        "adversarial": "Treatment rarely succeeds to improve symptoms",
+        "type": "implicit_negation",
+        "challenge": "Double negation creates hidden positive meaning",
+        "difficulty": "extreme"
+      },
+      {
+        "query": "Few patients lack improvement with this drug",
+        "correct": "Most individuals experience positive response to medication",
+        "adversarial": "Few patients show improvement with this drug",
+        "type": "implicit_negation",
+        "challenge": "Implicit negation through 'lack' reverses meaning",
+        "difficulty": "extreme"
+      },
+      {
+        "query": "It is impossible that this treatment is ineffective",
+        "correct": "The therapy cannot fail to provide beneficial results",
+        "adversarial": "It is impossible that this treatment is effective",
+        "type": "implicit_negation",
+        "challenge": "Nested impossibility creates complex logical structure",
+        "difficulty": "extreme"
+      },
+      {
+        "query": "If and only if symptoms persist, then increase dosage",
+        "correct": "Escalate medication amount precisely when signs continue",
+        "adversarial": "If and only if symptoms persist, then decrease dosage",
+        "type": "compound_logic",
+        "challenge": "Biconditional logic with critical medical decision",
+        "difficulty": "extreme"
+      },
+      {
+        "query": "Either surgery or radiation, but not both, is recommended",
+        "correct": "Exclusive choice between surgical or radiological intervention",
+        "adversarial": "Either surgery or radiation, and both, is recommended",
+        "type": "compound_logic",
+        "challenge": "Exclusive OR vs inclusive OR logical difference",
+        "difficulty": "extreme"
+      },
+      {
+        "query": "Treatment works unless patient has specific allergy",
+        "correct": "Therapy effective except in cases of particular hypersensitivity",
+        "adversarial": "Treatment works because patient has specific allergy",
+        "type": "compound_logic",
+        "challenge": "Exception condition vs causal condition",
+        "difficulty": "extreme"
+      },
+      {
+        "query": "Future test results will confirm past diagnosis",
+        "correct": "Upcoming examination findings will validate previous medical assessment",
+        "adversarial": "Past test results will confirm future diagnosis",
+        "type": "temporal_paradox",
+        "challenge": "Temporal causality reversal creates logical impossibility",
+        "difficulty": "extreme"
+      },
+      {
+        "query": "Prevention is better than cure after disease onset",
+        "correct": "Prophylactic measures exceed therapeutic value post-illness",
+        "adversarial": "Prevention is better than cure before disease onset",
+        "type": "temporal_paradox",
+        "challenge": "Temporal logic of prevention vs treatment",
+        "difficulty": "extreme"
+      },
+      {
+        "query": "Every patient needs some medication for recovery",
+        "correct": "All individuals require certain drugs for healing",
+        "adversarial": "Some patient needs every medication for recovery",
+        "type": "quantifier_shift",
+        "challenge": "Quantifier scope shift changes feasibility completely",
+        "difficulty": "extreme"
+      },
+      {
+        "query": "All doctors know some treatment for most diseases",
+        "correct": "Every physician understands certain therapies for majority of conditions",
+        "adversarial": "Some doctors know all treatment for most diseases",
+        "type": "quantifier_shift",
+        "challenge": "Multiple quantifier interaction creates different claims",
+        "difficulty": "extreme"
+      },
+      {
+        "query": "Most symptoms appear before all complications develop",
+        "correct": "Majority of signs emerge prior to complete complication onset",
+        "adversarial": "All symptoms appear before most complications develop",
+        "type": "quantifier_shift",
+        "challenge": "Temporal quantifier scope affects medical prediction",
+        "difficulty": "extreme"
+      }
+    ],
+    "metadata": {
+      "total_scenarios": 26,
+      "edge_types": [
+        "semantic_paradox",
+        "minimal_difference",
+        "maximal_perturbation",
+        "temporal_paradox",
+        "contextual_ambiguity",
+        "implicit_negation",
+        "quantifier_shift",
+        "compound_logic"
+      ],
+      "evaluation_time": 18.224822998046875
+    }
+  },
+  "timestamp": 1752459907.5462642
+}
