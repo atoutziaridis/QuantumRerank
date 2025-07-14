@@ -45,6 +45,10 @@ class SimilarityEngineConfig:
     enable_caching: bool = True
     max_cache_size: int = 1000
     performance_monitoring: bool = True
+    # Adaptive improvements
+    adaptive_weighting: bool = True  # Dynamically adjust quantum/classical weights
+    confidence_threshold: float = 0.8  # Confidence threshold for method selection
+    use_ensemble: bool = True  # Use ensemble of multiple similarity methods
     
     def __post_init__(self):
         if self.hybrid_weights is None:
@@ -214,20 +218,28 @@ class QuantumSimilarityEngine:
         return fidelity, metadata
     
     def _compute_hybrid_similarity(self, text1: str, text2: str) -> Tuple[float, Dict]:
-        """Compute weighted combination of classical and quantum similarities."""
+        """Compute adaptive weighted combination of classical and quantum similarities."""
         # Compute both similarities
         classical_sim, classical_meta = self._compute_classical_similarity(text1, text2)
         quantum_sim, quantum_meta = self._compute_quantum_similarity(text1, text2)
         
-        # Weighted combination
-        weights = self.config.hybrid_weights
-        hybrid_similarity = (
-            weights["classical"] * classical_sim + 
-            weights["quantum"] * quantum_sim
-        )
+        # Adaptive weighting based on confidence and agreement
+        if self.config.adaptive_weighting:
+            weights = self._compute_adaptive_weights(classical_sim, quantum_sim, classical_meta, quantum_meta)
+        else:
+            weights = self.config.hybrid_weights
+        
+        # Ensemble approach if enabled
+        if self.config.use_ensemble:
+            hybrid_similarity = self._compute_ensemble_similarity(classical_sim, quantum_sim, weights)
+        else:
+            hybrid_similarity = (
+                weights["classical"] * classical_sim + 
+                weights["quantum"] * quantum_sim
+            )
         
         metadata = {
-            'method_details': 'hybrid_weighted',
+            'method_details': 'adaptive_hybrid' if self.config.adaptive_weighting else 'hybrid_weighted',
             'classical_similarity': classical_sim,
             'quantum_similarity': quantum_sim,
             'weights': weights,
@@ -237,6 +249,70 @@ class QuantumSimilarityEngine:
         }
         
         return float(hybrid_similarity), metadata
+    
+    def _compute_adaptive_weights(self, classical_sim: float, quantum_sim: float, 
+                                classical_meta: Dict, quantum_meta: Dict) -> Dict[str, float]:
+        """Dynamically compute weights based on method agreement and confidence."""
+        
+        # Calculate agreement between methods
+        agreement = 1.0 - abs(classical_sim - quantum_sim)
+        
+        # Check method reliability
+        quantum_reliable = quantum_meta.get('success', False)
+        classical_reliable = classical_meta.get('success', False)
+        
+        # Base weights
+        quantum_weight = self.config.hybrid_weights["quantum"]
+        classical_weight = self.config.hybrid_weights["classical"]
+        
+        # Adjust based on reliability
+        if not quantum_reliable and classical_reliable:
+            # Quantum failed, rely on classical
+            quantum_weight = 0.1
+            classical_weight = 0.9
+        elif quantum_reliable and not classical_reliable:
+            # Classical failed, rely on quantum
+            quantum_weight = 0.9
+            classical_weight = 0.1
+        elif agreement > self.config.confidence_threshold:
+            # High agreement - trust quantum more
+            quantum_weight = min(0.8, quantum_weight + 0.1)
+            classical_weight = 1.0 - quantum_weight
+        elif agreement < 0.5:
+            # Low agreement - be more conservative, use more classical
+            quantum_weight = max(0.3, quantum_weight - 0.2)
+            classical_weight = 1.0 - quantum_weight
+        
+        return {"quantum": quantum_weight, "classical": classical_weight}
+    
+    def _compute_ensemble_similarity(self, classical_sim: float, quantum_sim: float, 
+                                   weights: Dict[str, float]) -> float:
+        """Compute ensemble similarity with multiple combination strategies."""
+        
+        # Strategy 1: Weighted average (original)
+        weighted_avg = weights["classical"] * classical_sim + weights["quantum"] * quantum_sim
+        
+        # Strategy 2: Geometric mean for better handling of extreme values
+        if classical_sim > 0 and quantum_sim > 0:
+            geometric_mean = (classical_sim ** weights["classical"]) * (quantum_sim ** weights["quantum"])
+        else:
+            geometric_mean = weighted_avg
+        
+        # Strategy 3: Max similarity when methods agree, weighted when they disagree
+        agreement = 1.0 - abs(classical_sim - quantum_sim)
+        if agreement > self.config.confidence_threshold:
+            consensus_sim = max(classical_sim, quantum_sim)
+        else:
+            consensus_sim = weighted_avg
+        
+        # Final ensemble: weighted combination of strategies
+        ensemble_sim = (
+            0.5 * weighted_avg +
+            0.3 * geometric_mean +
+            0.2 * consensus_sim
+        )
+        
+        return ensemble_sim
     
     def compute_similarities_batch(self, 
                                  query: str,

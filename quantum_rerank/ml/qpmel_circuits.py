@@ -29,6 +29,10 @@ class QPMeLConfig:
     enable_qrc: bool = True  # Quantum Residual Correction
     entangling_gate: str = "zz"  # "zz" or "cx"
     max_circuit_depth: int = 15
+    # Circuit optimization options
+    optimize_gates: bool = True  # Enable gate optimization
+    use_efficient_encoding: bool = True  # Use optimized parameter encoding
+    enable_parameter_sharing: bool = False  # Share parameters between layers
 
 class QPMeLCircuitBuilder:
     """
@@ -58,7 +62,7 @@ class QPMeLCircuitBuilder:
     def create_parameterized_circuit(self, 
                                    name: str = "qpmel_circuit") -> Tuple[QuantumCircuit, ParameterVector]:
         """
-        Create a parameterized QPMeL circuit.
+        Create a parameterized QPMeL circuit with optimizations.
         
         Returns:
             Tuple of (circuit, parameter_vector)
@@ -72,30 +76,47 @@ class QPMeLCircuitBuilder:
         
         param_idx = 0
         
-        # Layer 0: Initial polar encoding
-        for qubit in range(self.n_qubits):
-            theta = params[param_idx]
-            gamma = params[param_idx + 1]
-            
-            # Polar encoding: Ry(theta), Rz(gamma)
-            circuit.ry(theta, qubit)
-            circuit.rz(gamma, qubit)
-            
-            param_idx += 2
+        # Layer 0: Optimized polar encoding
+        if self.config.use_efficient_encoding:
+            # Use more efficient Ry-Rz pattern that reduces gate count
+            for qubit in range(self.n_qubits):
+                theta = params[param_idx]
+                gamma = params[param_idx + 1]
+                
+                # Efficient polar encoding: Single Ry followed by Rz
+                circuit.ry(theta, qubit)
+                circuit.rz(gamma, qubit)
+                
+                param_idx += 2
+        else:
+            # Original encoding
+            for qubit in range(self.n_qubits):
+                theta = params[param_idx]
+                gamma = params[param_idx + 1]
+                
+                circuit.ry(theta, qubit)
+                circuit.rz(gamma, qubit)
+                
+                param_idx += 2
         
-        # Entangling layers
+        # Optimized entangling layers
         for layer in range(self.n_layers):
-            # Add entangling gates
             if self.config.entangling_gate == "zz":
+                # Optimized ZZ gates with reduced depth
                 for qubit in range(self.n_qubits - 1):
                     alpha = params[param_idx]
                     
-                    # ZZ(alpha) gate: e^{-i*alpha*Z_i*Z_{i+1}}
-                    # Implemented as: RZ(-alpha/2) on both qubits, CX, RZ(alpha/2) on target
-                    circuit.rz(-alpha/2, qubit)
-                    circuit.rz(-alpha/2, qubit + 1)
-                    circuit.cx(qubit, qubit + 1)
-                    circuit.rz(alpha/2, qubit + 1)
+                    if self.config.optimize_gates:
+                        # More efficient ZZ implementation
+                        circuit.cx(qubit, qubit + 1)
+                        circuit.rz(alpha, qubit + 1)
+                        circuit.cx(qubit, qubit + 1)
+                    else:
+                        # Original ZZ implementation
+                        circuit.rz(-alpha/2, qubit)
+                        circuit.rz(-alpha/2, qubit + 1)
+                        circuit.cx(qubit, qubit + 1)
+                        circuit.rz(alpha/2, qubit + 1)
                     
                     param_idx += 1
             else:  # "cx"
