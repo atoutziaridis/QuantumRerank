@@ -27,6 +27,9 @@ from ..ml.parameterized_circuits import ParameterizedQuantumCircuits
 from .quantum_kernel_engine import QuantumKernelEngine, QuantumKernelConfig
 from .quantum_geometric_similarity import QuantumGeometricSimilarity, GeometricSimilarityConfig
 from .quantum_compression import QuantumCompressionHead, QuantumCompressionConfig
+from .multimodal_embedding_processor import MultimodalEmbeddingProcessor
+from .medical_domain_processor import MedicalDomainProcessor
+from ..config.multimodal_config import MultimodalMedicalConfig
 
 logger = logging.getLogger(__name__)
 
@@ -38,6 +41,7 @@ class SimilarityMethod(Enum):
     HYBRID_WEIGHTED = "hybrid_weighted"
     QUANTUM_KERNEL = "quantum_kernel"
     QUANTUM_GEOMETRIC = "quantum_geometric"
+    MULTIMODAL_QUANTUM = "multimodal_quantum"
 
 
 @dataclass
@@ -57,6 +61,9 @@ class SimilarityEngineConfig:
     # Compression settings
     enable_compression: bool = False  # Enable quantum-inspired compression
     compression_config: QuantumCompressionConfig = None  # Compression configuration
+    # Multimodal settings
+    enable_multimodal: bool = False  # Enable multimodal processing
+    multimodal_config: MultimodalMedicalConfig = None  # Multimodal configuration
     
     def __post_init__(self):
         if self.hybrid_weights is None:
@@ -135,6 +142,16 @@ class QuantumSimilarityEngine:
         else:
             self.compression_head = None
         
+        # Initialize multimodal components if enabled
+        if self.config.enable_multimodal:
+            multimodal_config = self.config.multimodal_config or MultimodalMedicalConfig()
+            self.multimodal_processor = MultimodalEmbeddingProcessor(multimodal_config)
+            self.medical_processor = MedicalDomainProcessor()
+            logger.info(f"Multimodal processing enabled: {multimodal_config.text_dim}+{multimodal_config.clinical_dim} -> {multimodal_config.target_quantum_dim}")
+        else:
+            self.multimodal_processor = None
+            self.medical_processor = None
+        
         logger.debug("All similarity engine components initialized")
     
     def compute_similarity(self, 
@@ -177,6 +194,8 @@ class QuantumSimilarityEngine:
                 similarity, metadata = self._compute_kernel_similarity(text1, text2)
             elif method == SimilarityMethod.QUANTUM_GEOMETRIC:
                 similarity, metadata = self._compute_geometric_similarity(text1, text2)
+            elif method == SimilarityMethod.MULTIMODAL_QUANTUM:
+                similarity, metadata = self._compute_multimodal_similarity(text1, text2)
             else:
                 raise ValueError(f"Unknown similarity method: {method}")
             
@@ -382,6 +401,99 @@ class QuantumSimilarityEngine:
         
         return float(similarity_score), metadata
     
+    def _compute_multimodal_similarity(self, text1: str, text2: str) -> Tuple[float, Dict]:
+        """Compute multimodal quantum similarity between texts."""
+        if not self.config.enable_multimodal:
+            raise ValueError("Multimodal processing not enabled")
+        
+        # Convert texts to multimodal format (text only for now)
+        query_data = {'text': text1}
+        candidate_data = {'text': text2}
+        
+        # Process with medical domain processor
+        processed_query = self.medical_processor.process_medical_query(query_data)
+        processed_candidate = self.medical_processor.process_medical_query(candidate_data)
+        
+        # Generate multimodal embeddings
+        query_result = self.multimodal_processor.encode_multimodal(processed_query)
+        candidate_result = self.multimodal_processor.encode_multimodal(processed_candidate)
+        
+        # Use fused embeddings for similarity
+        if query_result.fused_embedding is not None and candidate_result.fused_embedding is not None:
+            # Compute quantum fidelity using existing mechanism
+            similarity = self.embedding_processor.compute_fidelity_similarity(
+                query_result.fused_embedding, candidate_result.fused_embedding
+            )
+        else:
+            # Fallback to classical similarity
+            similarity = self.embedding_processor.compute_classical_similarity(
+                query_result.text_embedding or np.zeros(768),
+                candidate_result.text_embedding or np.zeros(768)
+            )
+        
+        metadata = {
+            'method_details': 'multimodal_quantum',
+            'query_modalities': query_result.modalities_used,
+            'candidate_modalities': candidate_result.modalities_used,
+            'query_processing_time_ms': query_result.processing_time_ms,
+            'candidate_processing_time_ms': candidate_result.processing_time_ms,
+            'medical_domain': processed_query.get('medical_domain', 'unknown'),
+            'success': True
+        }
+        
+        return float(similarity), metadata
+    
+    def compute_multimodal_similarity(self, query: Dict, candidate: Dict) -> Tuple[float, Dict]:
+        """
+        Compute similarity for multimodal medical data.
+        
+        Args:
+            query: Query dictionary with 'text' and/or 'clinical_data'
+            candidate: Candidate dictionary with 'text' and/or 'clinical_data'
+            
+        Returns:
+            Tuple of (similarity_score, metadata)
+        """
+        if not self.config.enable_multimodal:
+            raise ValueError("Multimodal processing not enabled")
+        
+        start_time = time.time()
+        
+        # Process medical domain aspects
+        processed_query = self.medical_processor.process_medical_query(query)
+        processed_candidate = self.medical_processor.process_medical_query(candidate)
+        
+        # Extract multimodal embeddings
+        query_result = self.multimodal_processor.encode_multimodal(processed_query)
+        candidate_result = self.multimodal_processor.encode_multimodal(processed_candidate)
+        
+        # Compute quantum fidelity using fused embeddings
+        if query_result.fused_embedding is not None and candidate_result.fused_embedding is not None:
+            fidelity = self.embedding_processor.compute_fidelity_similarity(
+                query_result.fused_embedding, candidate_result.fused_embedding
+            )
+        else:
+            # Fallback to text similarity if multimodal fusion failed
+            fidelity = self.embedding_processor.compute_classical_similarity(
+                query_result.text_embedding or np.zeros(768),
+                candidate_result.text_embedding or np.zeros(768)
+            )
+        
+        # Add comprehensive metadata
+        metadata = {
+            'multimodal_processing': True,
+            'modalities_used': list(set(query_result.modalities_used + candidate_result.modalities_used)),
+            'compression_ratio': self.multimodal_processor.quantum_compressor.get_compression_ratio() if self.multimodal_processor.quantum_compressor else 0,
+            'medical_domain': processed_query.get('medical_domain', 'unknown'),
+            'query_domain_confidence': processed_query.get('domain_confidence', 0.0),
+            'candidate_domain_confidence': processed_candidate.get('domain_confidence', 0.0),
+            'total_computation_time_ms': (time.time() - start_time) * 1000,
+            'query_processing_time_ms': query_result.processing_time_ms,
+            'candidate_processing_time_ms': candidate_result.processing_time_ms
+        }
+        
+        return fidelity, metadata
+    
     def compute_similarities_batch(self, 
                                  query: str,
                                  candidates: List[str],
@@ -415,6 +527,8 @@ class QuantumSimilarityEngine:
                 results = self._batch_kernel_similarities(query, candidates)
             elif method == SimilarityMethod.QUANTUM_GEOMETRIC:
                 results = self._batch_geometric_similarities(query, candidates)
+            elif method == SimilarityMethod.MULTIMODAL_QUANTUM:
+                results = self._batch_multimodal_similarities(query, candidates)
             else:
                 raise ValueError(f"Unknown similarity method: {method}")
             
@@ -584,6 +698,30 @@ class QuantumSimilarityEngine:
         
         return results
     
+    def _batch_multimodal_similarities(self, 
+                                     query: str,
+                                     candidates: List[str]) -> List[Tuple[str, float, Dict]]:
+        """Efficient batch multimodal quantum similarity computation."""
+        if not self.config.enable_multimodal:
+            raise ValueError("Multimodal processing not enabled")
+        
+        results = []
+        
+        for i, candidate in enumerate(candidates):
+            # Use multimodal similarity computation
+            similarity_score, metadata = self._compute_multimodal_similarity(query, candidate)
+            
+            # Update metadata for batch processing
+            metadata.update({
+                'method': 'multimodal_quantum',
+                'batch_index': i,
+                'success': True
+            })
+            
+            results.append((candidate, float(similarity_score), metadata))
+        
+        return results
+    
     def rerank_candidates(self, 
                         query: str,
                         candidates: List[str],
@@ -699,6 +837,10 @@ class QuantumSimilarityEngine:
             SimilarityMethod.QUANTUM_KERNEL,
             SimilarityMethod.QUANTUM_GEOMETRIC
         ]
+        
+        # Add multimodal method if enabled
+        if self.config.enable_multimodal:
+            methods.append(SimilarityMethod.MULTIMODAL_QUANTUM)
         
         benchmark_results = {}
         

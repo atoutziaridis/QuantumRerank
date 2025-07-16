@@ -126,24 +126,28 @@ class TwoStageRetriever:
             batch_size=self.config.batch_size
         )
         
-        if added > 0:
-            # Extract documents with embeddings
-            docs_with_embeddings = []
-            for doc in documents:
-                if doc.embedding is not None:
-                    docs_with_embeddings.append(doc)
-            
-            if docs_with_embeddings:
-                # Prepare data for FAISS
-                embeddings = np.array([doc.embedding for doc in docs_with_embeddings])
-                doc_ids = [doc.doc_id for doc in docs_with_embeddings]
-                metadatas = [doc.metadata.to_dict() for doc in docs_with_embeddings]
-                
-                # Add to FAISS
-                self.faiss_store.add_documents(embeddings, doc_ids, metadatas)
-                logger.info(f"Added {len(docs_with_embeddings)} documents to FAISS index")
+        # Always try to add to FAISS, regardless of whether documents were "new" to document store
+        # Extract documents with embeddings for FAISS indexing
+        docs_with_embeddings = []
+        for doc in documents:
+            # Refresh document from store to ensure we have the latest version with embeddings
+            stored_doc = self.document_store.get_document(doc.doc_id)
+            if stored_doc and stored_doc.embedding is not None:
+                # Check if this document is already in FAISS to avoid duplicates
+                if doc.doc_id not in self.faiss_store.doc_id_to_index:
+                    docs_with_embeddings.append(stored_doc)
         
-        return added
+        if docs_with_embeddings:
+            # Prepare data for FAISS
+            embeddings = np.array([doc.embedding for doc in docs_with_embeddings])
+            doc_ids = [doc.doc_id for doc in docs_with_embeddings]
+            metadatas = [doc.metadata.to_dict() for doc in docs_with_embeddings]
+            
+            # Add to FAISS
+            self.faiss_store.add_documents(embeddings, doc_ids, metadatas)
+            logger.info(f"Added {len(docs_with_embeddings)} documents to FAISS index")
+        
+        return max(added, len(docs_with_embeddings))  # Return the actual number of documents processed
     
     def add_texts(self,
                  texts: List[str],

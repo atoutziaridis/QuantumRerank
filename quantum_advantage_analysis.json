@@ -1,0 +1,115 @@
+{
+  "timestamp": "2025-07-15T21:42:40.760952",
+  "scenarios": [
+    {
+      "scenario_id": "emergency_noise_1",
+      "scenario_type": "noisy_emergency",
+      "query": "Emergency: Trauma patient, multiple injuries, limited history. altered consciousness, hypotension, abdominal distension. Rapid diagnosis needed with limited/noisy data.",
+      "noise_level": 0.4,
+      "missing_data_pct": 0.3,
+      "conflicts": [
+        "patient unable to provide history",
+        "vitals unstable",
+        "multiple potential injury sites"
+      ],
+      "expected_classical_confidence": 0.3,
+      "quantum_advantage_reason": "Superposition can represent multiple simultaneous injury possibilities"
+    },
+    {
+      "scenario_id": "emergency_noise_2",
+      "scenario_type": "noisy_emergency",
+      "query": "Emergency: Pediatric fever, crying, limited cooperation. high fever, irritability, possible neck stiffness. Rapid diagnosis needed with limited/noisy data.",
+      "noise_level": 0.4,
+      "missing_data_pct": 0.3,
+      "conflicts": [
+        "child uncooperative for exam",
+        "fever masking other symptoms",
+        "parent anxiety affecting history"
+      ],
+      "expected_classical_confidence": 0.3,
+      "quantum_advantage_reason": "Quantum uncertainty naturally models diagnostic ambiguity with limited data"
+    },
+    {
+      "scenario_id": "emergency_noise_3",
+      "scenario_type": "noisy_emergency",
+      "query": "Emergency: Psychiatric patient with medical emergency. chest pain, agitation, possible drug ingestion. Rapid diagnosis needed with limited/noisy data.",
+      "noise_level": 0.4,
+      "missing_data_pct": 0.3,
+      "conflicts": [
+        "unreliable history",
+        "psychiatric vs medical emergency",
+        "drug interaction effects"
+      ],
+      "expected_classical_confidence": 0.3,
+      "quantum_advantage_reason": "Quantum interference can separate signal from noise in conflicting presentations"
+    },
+    {
+      "scenario_id": "multimodal_conflict_1",
+      "scenario_type": "multimodal_conflict",
+      "query": "Complex case with conflicting data: Patient reports severe chest pain, appears comfortable. Resolve discrepancies between modalities.",
+      "noise_level": 0.25,
+      "missing_data_pct": 0.15,
+      "conflicts": [
+        "Text and vitals suggest low acuity, but ECG shows STEMI"
+      ],
+      "expected_classical_confidence": 0.4,
+      "quantum_advantage_reason": "Quantum entanglement can model complex text-ECG-lab correlations"
+    },
+    {
+      "scenario_id": "multimodal_conflict_2",
+      "scenario_type": "multimodal_conflict",
+      "query": "Complex case with conflicting data: Elderly patient with mild dyspnea and leg swelling. Resolve discrepancies between modalities.",
+      "noise_level": 0.25,
+      "missing_data_pct": 0.15,
+      "conflicts": [
+        "Labs suggest heart failure but imaging normal"
+      ],
+      "expected_classical_confidence": 0.4,
+      "quantum_advantage_reason": "Quantum superposition represents multiple disease states simultaneously"
+    },
+    {
+      "scenario_id": "multimodal_conflict_3",
+      "scenario_type": "multimodal_conflict",
+      "query": "Complex case with conflicting data: Young athlete with fatigue and palpitations. Resolve discrepancies between modalities.",
+      "noise_level": 0.25,
+      "missing_data_pct": 0.15,
+      "conflicts": [
+        "Benign symptoms but serious structural heart disease"
+      ],
+      "expected_classical_confidence": 0.4,
+      "quantum_advantage_reason": "Quantum interference resolves seemingly contradictory clinical data"
+    },
+    {
+      "scenario_id": "uncertainty_1",
+      "scenario_type": "uncertain",
+      "query": "Uncertain diagnosis: Intermittent chest pain, stress-related, family history unclear. Multiple possibilities, limited definitive data.",
+      "noise_level": 0.5,
+      "missing_data_pct": 0.4,
+      "conflicts": [
+        "symptom timing variable",
+        "stress vs organic",
+        "incomplete family history"
+      ],
+      "expected_classical_confidence": 0.25,
+      "quantum_advantage_reason": "Quantum probability amplitudes naturally represent diagnostic uncertainty"
+    },
+    {
+      "scenario_id": "uncertainty_2",
+      "scenario_type": "uncertain",
+      "query": "Uncertain diagnosis: Cognitive changes in elderly, depression vs dementia vs delirium. Multiple possibilities, limited definitive data.",
+      "noise_level": 0.5,
+      "missing_data_pct": 0.4,
+      "conflicts": [
+        "overlapping symptoms",
+        "multiple possible causes",
+        "progression unclear"
+      ],
+      "expected_classical_confidence": 0.25,
+      "quantum_advantage_reason": "Quantum superposition models multiple overlapping cognitive diagnoses"
+    }
+  ],
+  "routing_decisions": [
+    {
+      "scenario_id": "emergency_noise_1",
+      "scenario_type": "noisy_emergency",
+      "classical_confidence": 
