@@ -1,0 +1,117 @@
+{
+  "imports": {
+    "core_embeddings": {
+      "status": "success"
+    },
+    "tt_compression": {
+      "status": "success"
+    },
+    "quantized_faiss": {
+      "status": "success"
+    },
+    "slm_generator": {
+      "status": "success"
+    },
+    "pipeline": {
+      "status": "success"
+    }
+  },
+  "configurations": {
+    "embedding_config": {
+      "status": "success",
+      "model_name": "sentence-transformers/multi-qa-mpnet-base-dot-v1",
+      "embedding_dim": 768
+    },
+    "tt_config": {
+      "status": "success",
+      "tt_rank": 8,
+      "target_compression": 44.0
+    },
+    "faiss_config": {
+      "status": "success",
+      "quantization_bits": 8,
+      "target_dim": 384
+    },
+    "slm_config": {
+      "status": "success",
+      "model_name": "microsoft/Phi-3-mini-4k-instruct",
+      "max_memory_gb": 2.0
+    },
+    "pipeline_config": {
+      "status": "success",
+      "use_tt_compression": true,
+      "use_quantized_faiss": true,
+      "target_latency_ms": 100
+    }
+  },
+  "interfaces": {
+    "tt_interface": {
+      "status": "success",
+      "config_valid": true,
+      "compression_target": 44.0
+    },
+    "faiss_interface": {
+      "status": "success",
+      "config_valid": true,
+      "quantization_bits": 8
+    },
+    "slm_interface": {
+      "status": "success",
+      "config_valid": true,
+      "model_name": "microsoft/Phi-3-mini-4k-instruct"
+    }
+  },
+  "compression": {
+    "tt_compression_math": {
+      "status": "success",
+      "original_params": 38400000,
+      "estimated_tt_params": 53952,
+      "compression_ratio": 711.7437722419929,
+      "target_met": true
+    },
+    "faiss_compression_math": {
+      "status": "success",
+      "original_size_mb": 2.9296875,
+      "compressed_size_mb": 0.3662109375,
+      "compression_ratio": 8.0,
+      "target_met": true
+    },
+    "combined_compression": {
+      "status": "success",
+      "tt_compression": 711.7437722419929,
+      "faiss_compression": 8.0,
+      "combined_compression": 5693.950177935943,
+      "target_met": true
+    }
+  },
+  "dependencies": {
+    "torch": {
+      "status": "available",
+      "name": "PyTorch"
+    },
+    "numpy": {
+      "status": "available",
+      "name": "NumPy"
+    },
+    "transformers": {
+      "status": "available",
+      "name": "HuggingFace Transformers"
+    },
+    "sentence_transformers": {
+      "status": "available",
+      "name": "SentenceTransformers"
+    },
+    "faiss": {
+      "status": "available",
+      "name": "FAISS"
+    },
+    "tensorly": {
+      "status": "optional_missing",
+      "name": "TensorLy (for TT decomposition)"
+    },
+    "bitsandbytes": {
+      "status": "optional_missing",
+      "name": "BitsAndBytes (for quantization)"
+    }
+  }
+}
