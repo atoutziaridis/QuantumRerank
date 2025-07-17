@@ -30,6 +30,7 @@ class RetrieverConfig:
     # Retrieval parameters
     initial_k: int = 100  # Number of candidates from FAISS
     final_k: int = 10    # Number of results after reranking
+    rerank_k: int = 5    # Number of top candidates to rerank (OPTIMIZATION)
     
     # Quantum reranking configuration
     reranking_method: str = "hybrid"  # classical, quantum, or hybrid
@@ -295,14 +296,23 @@ class TwoStageRetriever:
         """
         Perform quantum reranking on candidates.
         
+        OPTIMIZATION: Only rerank top-K candidates from FAISS for massive speedup.
+        
         Returns:
             Tuple of (reranked_results, time_taken)
         """
         start_time = time.time()
         
-        # Get candidate texts
+        # OPTIMIZATION: Only rerank top rerank_k candidates
+        rerank_candidates = candidates[:self.config.rerank_k]
+        remaining_candidates = candidates[self.config.rerank_k:]
+        
+        logger.info(f"Quantum reranking {len(rerank_candidates)} candidates "
+                   f"(skipping {len(remaining_candidates)} for speed)")
+        
+        # Get candidate texts for reranking
         candidate_texts = []
-        for candidate in candidates:
+        for candidate in rerank_candidates:
             doc = self.document_store.get_document(candidate["doc_id"])
             if doc:
                 candidate_texts.append(doc.content)
@@ -310,30 +320,47 @@ class TwoStageRetriever:
                 # Shouldn't happen, but handle gracefully
                 candidate_texts.append("")
         
-        # Perform quantum reranking
+        # Perform quantum reranking on top candidates only
         reranked = self.quantum_reranker.rerank(
             query,
             candidate_texts,
-            top_k=k,
+            top_k=len(rerank_candidates),  # Rerank all available candidates
             method=self.config.reranking_method
         )
         
-        # Merge with original candidate info
-        results = []
+        # Merge reranked results with original candidate info
+        reranked_results = []
         for reranked_item in reranked:
             # Find original candidate by matching text
-            for i, candidate in enumerate(candidates):
+            for i, candidate in enumerate(rerank_candidates):
                 doc = self.document_store.get_document(candidate["doc_id"])
                 if doc and doc.content == reranked_item["text"]:
-                    results.append({
+                    reranked_results.append({
                         "doc_id": candidate["doc_id"],
                         "score": reranked_item["similarity_score"],
                         "quantum_rank": reranked_item["rank"],
                         "faiss_score": candidate["faiss_score"],
                         "faiss_rank": candidate["faiss_rank"],
-                        "metadata": candidate["metadata"]
+                        "metadata": candidate["metadata"],
+                        "stage": "quantum"
                     })
                     break
+        
+        # Add remaining FAISS candidates (not reranked) with original scores
+        remaining_results = []
+        for candidate in remaining_candidates:
+            remaining_results.append({
+                "doc_id": candidate["doc_id"],
+                "score": candidate["faiss_score"],  # Use original FAISS score
+                "quantum_rank": None,
+                "faiss_score": candidate["faiss_score"],
+                "faiss_rank": candidate["faiss_rank"],
+                "metadata": candidate["metadata"],
+                "stage": "faiss"
+            })
+        
+        # Combine and sort by score (quantum scores first, then FAISS scores)
+        results = reranked_results + remaining_results
         
         # Apply score threshold
         if self.config.min_score_threshold > 0:

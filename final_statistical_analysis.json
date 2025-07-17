@@ -1,0 +1,47 @@
+{
+  "performance_comparison": {
+    "classical_search_time": 0.015172958374023438,
+    "quantum_search_time": 2.758999156951904,
+    "speed_ratio": 181.83659962287868,
+    "classical_qps": 65.90672532998114,
+    "quantum_qps": 0.36245027385393735
+  },
+  "quality_comparison": {
+    "classical_metrics": {
+      "precision_at_5": 0.28,
+      "recall_at_5": 0.7875,
+      "mrr": 0.8099999999999999,
+      "ndcg_at_5": 0.7724111440101812
+    },
+    "quantum_metrics": {
+      "precision_at_5": 0.26,
+      "recall_at_5": 0.7458333333333333,
+      "mrr": 0.8099999999999999,
+      "ndcg_at_5": 0.7509568875887688
+    },
+    "overall_quality_difference": -0.020780230772019764
+  },
+  "statistical_tests": {
+    "precision_at_5": {
+      "n_differences": 2,
+      "p_value": 1.0,
+      "significant": false,
+      "interpretation": "Too few differences (2) for meaningful test"
+    },
+    "recall_at_5": {
+      "n_differences": 2,
+      "p_value": 1.0,
+      "significant": false,
+      "interpretation": "Too few differences (2) for meaningful test"
+    },
+    "mrr": {
+      "n_differences": 3,
+      "p_value": 1.0,
+      "significant": false,
+      "interpretation": "Too few differences (3) for meaningful test"
+    },
+    "ndcg_at_5": {
+      "n_differences": 6,
+      "statistic": 6.0,
+      "p_value": 0.4375,
+      "significant": 
