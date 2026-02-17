@@ -6,19 +6,19 @@
 
 > **Super-compressed, explainable, and efficient RAG with advanced tensor decomposition and neural compression**
 
-## 🚀 What Makes TensorRAG Different
+## What Makes TensorRAG Different
 
 TensorRAG is a **production-ready RAG system** that achieves **87% memory reduction** and **30ms query latency** while maintaining state-of-the-art retrieval quality through advanced tensor decomposition and neural compression techniques.
 
-### ✨ Key Innovations
+### Key Innovations
 
-- **🔬 Tensor Train Decomposition**: Compress 768D embeddings to 32D with minimal quality loss
-- **⚡ Matrix Product States (MPS)**: Efficient attention computation with exponential compression
-- **🧠 Adaptive Compression**: Dynamic quality vs. efficiency trade-offs based on query complexity
-- **📊 Explainable Retrieval**: Decomposed tensor representations provide interpretable similarity scores
-- **🔧 Production-Ready**: Sub-linear memory scaling, <50ms latency, enterprise deployment tools
+- ** Tensor Train Decomposition**: Compress 768D embeddings to 32D with minimal quality loss
+- ** Matrix Product States (MPS)**: Efficient attention computation with exponential compression
+- ** Adaptive Compression**: Dynamic quality vs. efficiency trade-offs based on query complexity
+- ** Explainable Retrieval**: Decomposed tensor representations provide interpretable similarity scores
+- ** Production-Ready**: Sub-linear memory scaling, <50ms latency, enterprise deployment tools
 
-## 📊 Performance Benchmarks
+##  Performance Benchmarks
 
 | System | Query Time | Memory Usage | Accuracy (NDCG@10) | Compression Ratio |
 |--------|------------|--------------|---------------------|-------------------|
@@ -29,7 +29,7 @@ TensorRAG is a **production-ready RAG system** that achieves **87% memory reduct
 
 *Benchmarked on 100K documents, 500 complex queries across 5 domains*
 
-## 🏗️ Architecture Overview
+##  Architecture Overview
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
@@ -45,13 +45,13 @@ TensorRAG is a **production-ready RAG system** that achieves **87% memory reduct
 
 ### Core Components
 
-- **📦 Tensor Compression Engine**: Advanced decomposition with quality preservation
-- **🔍 Adaptive Retrieval**: Smart quality vs. speed trade-offs
-- **📈 Performance Monitor**: Real-time efficiency and quality tracking
-- **🛡️ Privacy Framework**: Differential privacy and secure computation
-- **☁️ Edge Deployment**: Optimized for resource-constrained environments
+- ** Tensor Compression Engine**: Advanced decomposition with quality preservation
+- ** Adaptive Retrieval**: Smart quality vs. speed trade-offs
+- ** Performance Monitor**: Real-time efficiency and quality tracking
+- ** Privacy Framework**: Differential privacy and secure computation
+- ** Edge Deployment**: Optimized for resource-constrained environments
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Installation
 
@@ -122,7 +122,7 @@ config = AdvancedConfig(
 )
 ```
 
-## 📈 Evaluation Results
+## Evaluation Results
 
 ### Comprehensive Benchmarks
 
@@ -146,7 +146,7 @@ Our evaluation on 150 real documents from arXiv, Wikipedia, PubMed, and legal so
 - **Effect Sizes**: All differences < 0.2 (negligible to small)
 - **Conclusion**: Quality preservation with massive efficiency gains
 
-## 🔬 Technical Deep Dive
+## Technical Deep Dive
 
 ### Tensor Train Decomposition
 
@@ -193,7 +193,7 @@ class MPSAttention:
 - **Maintained semantic expressiveness** through entanglement structure
 - **Interpretable attention patterns** via MPS bond analysis
 
-## 🛠️ Production Deployment
+## Production Deployment
 
 ### Docker Deployment
 
@@ -258,29 +258,29 @@ edge_config = EdgeOptimizer.optimize_for_device(
 retriever = TensorRAGRetriever(config=edge_config)
 ```
 
-## 📚 Use Cases
+## Use Cases
 
-### 🏥 Healthcare & Medical Research
+### Healthcare & Medical Research
 - **Medical literature search** with 99.2% accuracy
 - **Drug discovery** knowledge retrieval
 - **Clinical decision support** with explainable recommendations
 
-### 🏛️ Legal & Compliance
+### Legal & Compliance
 - **Case law research** with hierarchical relevance
 - **Regulatory compliance** document analysis
 - **Contract analysis** with semantic similarity
 
-### 🔬 Scientific Research
+### Scientific Research
 - **Academic paper discovery** across 50+ fields
 - **Research trend analysis** with temporal awareness
 - **Citation recommendation** based on semantic content
 
-### 💼 Enterprise Knowledge Management
+### Enterprise Knowledge Management
 - **Internal documentation** search and discovery
 - **Technical support** with automated ticket routing
 - **Product information** retrieval with multi-modal support
 
-## 🧮 Memory Efficiency Analysis
+## Memory Efficiency Analysis
 
 ### Scaling Characteristics
 
@@ -310,7 +310,7 @@ TensorRAG (100K docs):
 └── Total: 570MB (4.5x reduction)
 ```
 
-## 🔍 Explainability Features
+## Explainability Features
 
 ### Tensor Component Analysis
 
@@ -348,7 +348,7 @@ Tensor decomposition:
   }
 ```
 
-## 📈 Performance Monitoring
+## Performance Monitoring
 
 ### Real-time Metrics Dashboard
 
@@ -382,7 +382,7 @@ monitor.enable_auto_optimization(
 )
 ```
 
-## 🤝 Contributing
+## Contributing
 
 We welcome contributions! See our [Contributing Guide](CONTRIBUTING.md) for details.
 
@@ -412,14 +412,14 @@ pytest tests/benchmarks/ --benchmark-only
 
 This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENSE) file for details.
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 - **SentenceTransformers** for providing excellent embedding models
 - **FAISS** for efficient vector similarity search
 - **Tensor decomposition research** from the quantum computing and machine learning communities
 - **RAG evaluation frameworks** including RAGBench and BEIR
 
-## 📖 Citation
+## Citation
 
 If you use TensorRAG in your research, please cite:
 
@@ -434,12 +434,13 @@ If you use TensorRAG in your research, please cite:
 
 ---
 
-## 🔬 Research Note
+## Research Note
 
 While this project was initially explored with quantum-inspired techniques, comprehensive evaluation showed that **classical tensor decomposition methods provide superior performance for practical RAG applications**. The "quantum" branding has been retained only for academic and marketing value, as the core innovations are fundamentally classical tensor algebra optimizations.
 
 **Key insight**: Modern embedding models already capture rich semantic relationships that quantum processing doesn't meaningfully enhance, while tensor decomposition provides massive efficiency gains with maintained quality.
 
 ---
+
 
 **Ready to supercharge your RAG system? Get started with TensorRAG today!** 🚀
