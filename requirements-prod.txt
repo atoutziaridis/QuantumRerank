@@ -16,7 +16,7 @@ opentelemetry-exporter-prometheus==1.12.0rc1
 psutil==5.9.6
 
 # Production security enhancements
-cryptography==41.0.8
+cryptography==46.0.7
 python-jose[cryptography]==3.3.0
 
 # Production caching (Redis)
