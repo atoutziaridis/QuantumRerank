@@ -2,7 +2,7 @@
 # Deployment, monitoring, and production optimization packages
 
 # Production ASGI server
-gunicorn==21.2.0
+gunicorn==22.0.0
 uvicorn[standard]==0.24.0
 
 # Production monitoring and observability
