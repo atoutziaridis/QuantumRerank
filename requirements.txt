@@ -27,7 +27,7 @@ aiofiles>=23.2.1
 # Security and authentication
 passlib[bcrypt]>=1.7.4
 python-jose[cryptography]>=3.3.0
-cryptography>=41.0.8
+cryptography>=50.0.0
 
 # Caching and performance
 redis>=5.0.1
